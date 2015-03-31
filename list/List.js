@@ -420,7 +420,11 @@ define([
 		 * @protected
 		 */
 		getIdentity: function (item) {
-			return this.store.getIdentity(item);
+			if (Array.isArray(this.store) === false) {
+				return this.store.getIdentity(item);
+			} else {
+				return item.id;
+			}
 		},
 
 		/**
