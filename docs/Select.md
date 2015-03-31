@@ -69,6 +69,22 @@ require(["dstore/Memory", "dstore/Trackable",
 });
 ```
 
+Or with an array in store property :
+
+```js
+require(["decor/ObservableArray", "decor/Observable",
+         "deliteful/Select", "requirejs-domready/domReady!"],
+  function (ObservableArray, Observable) {
+    // Create the store
+    var store = new ObservableArray();
+    select.store = store;
+    // add options to the Select widget
+    store.push(new Observable({text: "Option 1", value: "1"}));
+    ...
+    select.placeAt(document.body);
+});
+```
+
 <iframe width="100%" height="300" allowfullscreen="allowfullscreen" frameborder="0" 
 src="http://jsfiddle.net/ibmjs/59LP6/embedded/result,js,html">
 <a href="http://jsfiddle.net/ibmjs/59LP6/">checkout the sample on JSFiddle</a></iframe>
