@@ -414,16 +414,6 @@ define([
 		//////////// delite/Selection implementation ///////////////////////////////////////
 
 		/**
-		 * Returns the identity of an item.
-		 * @param {Object} item The item
-		 * @returns {Object}
-		 * @protected
-		 */
-		getIdentity: function (item) {
-			return this.store.getIdentity(item);
-		},
-
-		/**
 		 * Updates renderers when the selection has changed.
 		 * @param {Object[]} items The items which renderers must be updated.
 		 * @protected
