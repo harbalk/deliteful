@@ -7,7 +7,7 @@ title: deliteful/list/List
 
 
 The `deliteful/list/List` custom element (`d-list` custom tag) renders an optionally scrollable list of items that 
-are retrieved from a store object from the [dstore](http://dstorejs.io/) project.
+are retrieved from an array or a store object from the [dstore](http://dstorejs.io/) project.
 
 The list inherits from the [`delite/Store`](/delite/docs/master/Store.md) class and as such any valid `dstore/Store` 
 implementation can be used to provide data to the list. No store is provided by default and the application developer 
@@ -71,8 +71,10 @@ See [`delite/Widget`](/delite/docs/master/Widget.md) for full details on how ins
 ```
 ### Programmatic Instantiation
 
+#### With `dstore/Memory` as store
+
 ```js
-require(["dstore/Memory", "delite/list/List", "requirejs-domready/domReady!"], function (Memory, List) {
+require(["dstore/Memory", "deliteful/list/List", "requirejs-domready/domReady!"], function (Memory, List) {
 	// Create a memory store for the list and initialize it
 	var dataStore = new Memory({idProperty: "label", data:
 		[
@@ -85,6 +87,30 @@ require(["dstore/Memory", "delite/list/List", "requirejs-domready/domReady!"], f
 			{ label: "China", sales: 500, profit: 40, region: "Asia" },
 			{ label: "Japan", sales: 900, profit: 100, region: "Asia" }
 	]});
+	// A list of categorized items from dataStore, that uses the default item renderer,
+	// mapping the sales property of items to righttext and using the region property
+	// as the item category.
+	var list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+	list.placeAt(document.body);
+});
+```
+
+#### With an array as store
+
+```js
+require(["deliteful/list/List", "requirejs-domready/domReady!"], function (List) {
+	// Create a memory store for the list and initialize it
+	var dataStore =
+		[
+			{ label: "France", sales: 500, profit: 50, region: "EU" },
+			{ label: "Germany", sales: 450, profit: 48, region: "EU" },
+			{ label: "UK", sales: 700, profit: 60, region: "EU" },
+			{ label: "USA", sales: 2000, profit: 250, region: "America" },
+			{ label: "Canada", sales: 600, profit: 30, region: "America" },
+			{ label: "Brazil", sales: 450, profit: 30, region: "America" },
+			{ label: "China", sales: 500, profit: 40, region: "Asia" },
+			{ label: "Japan", sales: 900, profit: 100, region: "Asia" }
+	];
 	// A list of categorized items from dataStore, that uses the default item renderer,
 	// mapping the sales property of items to righttext and using the region property
 	// as the item category.
@@ -113,22 +139,12 @@ to `"none"` in order to remove the default scrolling capability.
 <a name="store"></a>
 ### Store capabilities
 
-No store is created by default and one has to provided to the list for it to display its items. It can either be done
-programmatically:
+#### Store instanciation
 
-```js
-require(["dstore/Memory", "dstore/Trackable", "delite/list/List"], function (Memory, Trackable, List) {
-    var list = new List();
-    var store = new (Memory.createSubclass([Trackable], {}))();
-    var item1 = {...};
-    var item2 = {...};
-    store.add(item1);
-    store.add(item2, {beforeId: item1.id});
-    list.store = store;
-});
-```
+No store is created by default and one has to provided to the list for it to display its items.
+The store can be instanciate with 3 different ways.
 
-Or declaratively using the `deliteful/Store` custom element:
+##### Declaratively
 
 ```html
 <d-store id="myStore">
@@ -140,9 +156,43 @@ Or declaratively using the `deliteful/Store` custom element:
 <d-list store="myStore"></d-list>
 ```
 
-If the provided is trackable (see [dstore documentation](https://github.com/sitepen/dstore)), that is when it extends
-`dstore/Trackable`, the widget will react to addition, deletion, move and update of the store content and 
+##### Programmaticaly with a `dstore/Store`
+
+```js
+require(["dstore/Memory", "dstore/Trackable", "deliteful/list/List"], function (Memory, Trackable, List) {
+    var list = new List();
+    var store = new (Memory.createSubclass([Trackable], {}))();
+    var item1 = {...};
+    var item2 = {...};
+    store.add(item1);
+    store.add(item2, {beforeId: item1.id});
+    list.store = store;
+});
+```
+
+If the provided store is trackable (see [dstore documentation](https://github.com/sitepen/dstore)), that is when it extends
+`dstore/Trackable`, the widget will react to **addition, deletion, move and update** of the store content and
 refresh its rendering accordingly.
+
+##### Programmaticaly with an array
+
+```js
+require(["decor/ObservableArray", "decor/Observable", "deliteful/list/List"], function (ObservableArray, Observable, List) {
+    var list = new List();
+    var store = new ObservableArray();
+    var item1 = new Observable({...});
+    var item2 = new Observable({...});
+    store.push(item1);
+    store.push(item2);
+    list.store = store;
+});
+```
+
+If the provided store is observable, that is when it is an `decor/ObservableArray`, the widget will react to **addition,
+deletion and move** of the store content and refresh its rendering accordingly.
+If the items of the array are `decor/Observable`, the widget will also react to **update**.
+
+#### Mapping capability
 
 Because the List widget inherit from [`delite/StoreMap`](/delite/docs/master/StoreMap.md), you can redefine at will the mapping between
 your store items and the ones expected by the renderer using mapping attributes and functions, as in the following example:
@@ -196,6 +246,7 @@ list.on("query-error", function (error) {
 	...
 });
 ```
+
 
 <a name="categories"></a>
 ### Categorized items

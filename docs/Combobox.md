@@ -83,6 +83,26 @@ require(["dstore/Memory", "dstore/Trackable",
 });
 ```
 
+Or with an array in store property of the list :
+
+```js
+require(["decor/ObservableArray", "decor/Observable",
+         "deliteful/Combobox", "deliteful/list/List",
+         "requirejs-domready/domReady!"],
+  function (ObservableArray, Observable, Combobox, List) {
+    // Create the store
+    var dataStore = new ObservableArray();
+    // Add options
+    dataStore.push(new Observable(...));
+    ...
+    // Create the List
+    var list = new List({store: dataStore, ...});
+    // Create the Combobox
+    var Combobox = new Combobox({list: list, selectionMode: "multiple"});
+    Combobox.placeAt(document.body);
+});
+```
+
 <iframe width="100%" height="300" allowfullscreen="allowfullscreen" frameborder="0" 
 src="http://jsfiddle.net/ibmjs/s2fzabtb/embedded/result,js,html">
 <a href="http://jsfiddle.net/ibmjs/s2fzabtb/">checkout the sample on JSFiddle</a></iframe>

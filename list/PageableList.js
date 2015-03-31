@@ -336,6 +336,9 @@ define([
 					sup.apply(this, arguments);
 				}
 				this._collection = collection;
+				if (this.pageLength !== 0) {
+					this.emit("query-success", { renderItems: this.renderItems, cancelable: false, bubbles: true });
+				}
 			};
 		}),
 
@@ -381,7 +384,7 @@ define([
 				this._rangeSpec.start = this._lastLoaded + 1;
 				this._rangeSpec.count = this.pageLength;
 			}
-			var results = this._collection.fetchRange({start: this._rangeSpec.start,
+			var results = this.fetchRange(this._collection, {start: this._rangeSpec.start,
 				end: this._rangeSpec.start + this._rangeSpec.count});
 			return results.then(function (items) {
 				var page = items.map(function (item) {
@@ -411,7 +414,7 @@ define([
 				this._rangeSpec.count += this._rangeSpec.start;
 				this._rangeSpec.start = 0;
 			}
-			var results = this._collection.fetchRange({start: this._rangeSpec.start,
+			var results = this.fetchRange(this._collection, {start: this._rangeSpec.start,
 				end: this._rangeSpec.start + this._rangeSpec.count});
 			return results.then(function (items) {
 				var page = items.map(function (item) {
@@ -447,9 +450,10 @@ define([
 			var idPage, i;
 			if (first) {
 				idPage = this._idPages.shift();
-				this._firstLoaded += idPage.length;
+				//this._firstLoaded += idPage.length;
 				for (i = 0; i < idPage.length; i++) {
-					this._removeRenderer(this.getItemRendererByIndex(0), true);
+					this._removeRenderer(this.getItemRendererByIndex(this._firstLoaded), true);
+					this._firstLoaded++;
 				}
 				if (idPage.length && !this._previousPageLoader) {
 					this._createPreviousPageLoader();
@@ -594,6 +598,23 @@ define([
 			}
 			return renderer;
 		},
+
+		/**
+		 * Returns the item renderer at a specific index in the List, or null if there is no
+		 * renderer at this index or if the item at this index is not displayed.
+		 * @param {number} index The item renderer at the index (first item renderer index is 0).
+		 * @returns {module:deliteful/list/ItemRenderer}
+		 */
+		getItemRendererByIndex: dcl.superCall(function (sup) {
+			return function (index) {
+				if (this._firstLoaded >= 0 && this._lastLoaded >= 0) {
+					return (index >= 0 && index >= this._firstLoaded && index <= this._lastLoaded) ?
+						this.getItemRenderers().item((index - this._firstLoaded)) : null;
+				} else {
+					return sup.call(this, index);
+				}
+			};
+		}),
 
 		//////////// Event handlers ///////////////////////////////////////
 
