@@ -93,6 +93,8 @@ define([
 		combo.placeAt(container);
 		//container.appendChild(combo);
 		//combo.attachedCallback();
+		container.appendChild(combo);
+		combo.attachedCallback();
 		return combo;
 	};
 
