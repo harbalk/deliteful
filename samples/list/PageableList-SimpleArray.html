@@ -38,6 +38,7 @@
 			});
 
 			list.store = arr.slice(0,20);
+
 			list.pageLength = 5;
 			list.maxPages = 2;
 
@@ -47,7 +48,7 @@
 			list.righttextFunc = function (item) {
 				return item.title.split("order ")[1];
 			};
-
+			
 			list.placeAt(document.body);
 			document.body.style.display = "";
 		});
