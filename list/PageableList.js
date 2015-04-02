@@ -298,7 +298,8 @@ define([
 
 		computeProperties: function (props) {
 			if (this.pageLength > 0 && this.attached) {
-				if ("store" in props || "query" in props || "_collection" in props)  {
+				console.log(props);
+				if (("store" in props || "query" in props || "_collection" in props) && ("attached" in props) ) {
 					// Initial loading of the list
 					if (this._dataLoaded) {
 						this._setBusy(true, true);

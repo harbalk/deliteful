@@ -25,6 +25,17 @@
 			list.id = "L";
 			list.store = [];
 
+			var arr = []
+			for (var i = 0; i < 100; i++) {
+				arr.push({title:"Programmatic item of order " + i});
+			}
+
+			list.on("new-query-asked", function() {
+				list.store = list.store.concat(arr.slice(list.store.length, list.store.length + 20));
+			});
+
+			list.store = arr.slice(0,20);
+
 			list.pageLength = 5;
 			list.maxPages = 2;
 
@@ -35,9 +46,6 @@
 				return item.title.split("order ")[1];
 			};
 
-			for (var i = 0; i < 100; i++) {
-				list.store.push({title:"Programmatic item of order " + i});
-			}
 
 			list.placeAt(document.body);
 			document.body.style.display = "";
