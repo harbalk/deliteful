@@ -295,10 +295,10 @@ define([
 		_lastLoaded: -1,
 
 		//////////// delite/Store methods ///////////////////////////////////////
-		
+
 		refreshRendering: function (props) {
-			if (this.pageLength > 0) {
-				if ("store" in props || "query" in props || "_collection" in props)  {
+			if (this.pageLength > 0)
+				if (("store" in props || "query" in props || "_collection" in props) && ("attached" in props) ) {
 					// Initial loading of the list
 					if (this._dataLoaded) {
 						this._setBusy(true, true);
