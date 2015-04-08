@@ -28,26 +28,30 @@
 			list.store = new ObservableArray();
 			var arr = [];
 
-			Array.observe(arr, function () {
-				//list.computeProperties();
-				console.log("patate");
-			});
-			Array.observe(list.store, function () {
-				list.computeProperties([]);
-				console.log("pomme");
-			});
-
-
 			for (var i = 0; i < 100; i++) {
 				arr.push({title:"Programmatic item of order " + i});
 			}
 
 			list.on("new-query-asked", function() {
 				window.setTimeout(function() {
-					list.store = list.store.concat(arr.slice(list.store.length, list.store.length + 20));},1000);
+					t = list.store.length;
+					for (i =list.store.length ; i < t + 20; i++){
+						list.store[i] = arr[i];
+					}
+					list.store.splice(0, 0, "Programmatic item of order 0");
+					/*list.store = list.store.concat(arr.slice(list.store.length, list.store.length + 20));*/},2000);
 			});
 
-			list.store = arr.slice(0,20);
+			for (i =0; i < 20; i++){
+				list.store[i] = arr[i];
+			}
+
+			ObservableArray.observe(list.store, function () {
+				console.log("nantes");
+				list._loadNextPage();
+			});
+
+			//list.store = arr.slice(0,20);
 			arr.push({title:"soupe"});
 			list.pageLength = 5;
 			list.maxPages = 2;

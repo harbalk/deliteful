@@ -297,8 +297,8 @@ define([
 		//////////// delite/Store methods ///////////////////////////////////////
 
 		refreshRendering: function (props) {
-			if (this.pageLength > 0)
-				if (("store" in props || "query" in props || "_collection" in props) && ("attached" in props) ) {
+			if (this.pageLength > 0) {
+				if ((/*"store" in props ||*/ "query" in props || "_collection" in props) && (this.attached === false) ) {
 					// Initial loading of the list
 					if (this._dataLoaded) {
 						this._setBusy(true, true);
@@ -370,6 +370,7 @@ define([
 		 * @private
 		 */
 		_loadNextPage: function () {
+			console.log("paris");
 			if (!this._rangeSpec) {
 				this._rangeSpec = {
 					start: 0,
