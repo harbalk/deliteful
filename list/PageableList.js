@@ -370,7 +370,6 @@ define([
 		 * @private
 		 */
 		_loadNextPage: function () {
-			console.log("paris");
 			if (!this._rangeSpec) {
 				this._rangeSpec = {
 					start: 0,

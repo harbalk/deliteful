@@ -35,10 +35,11 @@
 			list.on("new-query-asked", function() {
 				window.setTimeout(function() {
 					t = list.store.length;
-					for (i =list.store.length ; i < t + 20; i++){
+					for (i =list.store.length ; i < t + 2*(args.end-args.start); i++){
 						list.store[i] = arr[i];
 					}
-					list.store.splice(0, 0, "Programmatic item of order 0");
+
+					//list.store.splice(0, 0, "Programmatic item of order 0");
 					/*list.store = list.store.concat(arr.slice(list.store.length, list.store.length + 20));*/},2000);
 			});
 
