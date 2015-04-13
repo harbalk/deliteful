@@ -19,10 +19,10 @@
 	<script type="text/javascript">
 		require([
 			"delite/register",
-			"deliteful/list/PageableList", // page level CSS
+			"deliteful/list/List", // page level CSS
 			"delite/ObservableArray"
-		], function (register, PageableList, ObservableArray) {
-			var list  = register.createElement("d-pageable-list");
+		], function (register, List, ObservableArray) {
+			var list  = register.createElement("d-list");
 			list.id = "L";
 
 			list.store = new ObservableArray();
@@ -32,26 +32,9 @@
 				arr.push({title:"Programmatic item of order " + i});
 			}
 
-			list.on("new-query-asked", function(args) {
-				window.setTimeout(function() {
-					var t = list.store.length;
-					for (i =list.store.length ; i < t + 2*(args.end-args.start); i++){
-						list.store[i] = arr[i];
-					}
-					list.store.push();},2000);
-			});
-
-			for (i =0; i < 20; i++){
+			for (i =0; i < 5; i++){
 				list.store[i] = arr[i];
 			}
-
-			ObservableArray.observe(list.store, function () {
-				list._loadNextPage();
-			});
-
-			arr.push({title:"soupe"});
-			list.pageLength = 5;
-			list.maxPages = 2;
 
 			list.setAttribute("aria-label", "Sample list that uses attributes for store item to renderer item mapping");
 			list.labelAttr = "title";
@@ -62,6 +45,29 @@
 
 			list.placeAt(document.body);
 			document.body.style.display = "";
+
+			window.setTimeout(function() {
+				var t = list.store.length;
+				for (i =list.store.length ; i < t + 2; i++){
+					list.store[i] = arr[i];
+				}
+				list.store.push();},3000);
+
+			window.setTimeout(function() {
+				var t = list.store.length;
+				for (i =list.store.length ; i < t + 2; i++){
+					list.store[i] = arr[i];
+				}
+				list.store.push();},3000);
+
+			var t = list.store.length;
+			for (i =list.store.length ; i < t + 2; i++){
+				list.store[i] = arr[i];
+			}
+			var t = list.store.length;
+			for (i =list.store.length ; i < t + 2; i++){
+				list.store[i] = arr[i];
+			}
 		});
 	</script>
 </head>
