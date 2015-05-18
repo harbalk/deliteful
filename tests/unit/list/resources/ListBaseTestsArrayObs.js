@@ -246,9 +246,6 @@ define([
 						list.attachedCallback();
 						for (var i = 0; i < 3; i++) {
 							var obj = new Observable({id: i, label: "item " + i});
-							Observable.observe(obj, function (changeRecords) {
-								list.observeCallback(changeRecords);
-							});
 							list.store.set(i, obj);
 						}
 						list.deliver();
@@ -274,9 +271,6 @@ define([
 						list.attachedCallback();
 						for (var i = 0; i < 3; i++) {
 							var obj = new Observable({id: i, label: "item " + i});
-							Observable.observe(obj, function (changeRecords) {
-								list.observeCallback(changeRecords);
-							});
 							list.store.set(i, obj);
 						}
 						list.deliver();
@@ -299,7 +293,7 @@ define([
 							renderer = list.children[0];
 							waitForCondition(function () {
 								return renderer.item.iconclass === "my-other-icon";
-							}, TIMEOUT, INTERVAL).then(d.callback(function () {
+							}, TIMEOUT, INTERVAL).then(d.rejectOnError(function () {
 								assert.strictEqual(renderer.item.label, "item a");
 								assert.strictEqual(renderer.firstChild.getAttribute("role"), "gridcell");
 								assert.strictEqual(renderer.firstChild.firstChild.className,
