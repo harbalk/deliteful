@@ -36,7 +36,7 @@
 			for (i =0; i < 5; i++){
 				var obj = new Observable(arr[i]);
 				Observable.observe(obj, function (changeRecords) {
-					list.observeCallback(changeRecords);
+					console.log("Observe User");
 				});
 				list.store.set(i, obj);
 			}
@@ -86,7 +86,7 @@
 </head>
 <body style="display: none" role="application">
 <d-linear-layout style="width: 100%; height: 100%">
-	<h1 class="header"><div>Example to use PageableList with ObservableArray</div></h1>
+	<h1 class="header"><div>Example to use List with ObservableArray and Observable Objects</div></h1>
 </d-linear-layout>
 </body>
 </html>
