@@ -47,10 +47,10 @@ See [`delite/Widget`](/delite/docs/master/Widget.md) for full details on how ins
 <d-pageable-list height="100%" righttextAttr="sales" categoryAttr="region" id="myStore">
 </d-list>
 ```
-### Programmatic Instantiation
+### Programmatic Instantiation with a `dstore/Store` in store property
 
 ```js
-require(["dstore/Memory", "delite/list/PageableList", "requirejs-domready/domReady!"], 
+require(["dstore/Memory", "deliteful/list/PageableList", "requirejs-domready/domReady!"],
   function (Memory, PageableList) {
   // Create a memory store for the list and initialize it
   var dataStore = new Memory({idProperty: "label", data:
@@ -76,6 +76,35 @@ require(["dstore/Memory", "delite/list/PageableList", "requirejs-domready/domRea
 <iframe width="100%" height="300" allowfullscreen="allowfullscreen" frameborder="0" 
 src="http://jsfiddle.net/ibmjs/099c6dkk/embedded/result,js">
 <a href="http://jsfiddle.net/ibmjs/099c6dkk/">checkout the sample on JSFiddle</a></iframe>
+
+### Programmatic Instantiation with an array in store property
+
+```js
+require(["deliteful/list/PageableList", "requirejs-domready/domReady!"],
+  function (PageableList) {
+  // Create a memory store for the list and initialize it
+  var dataStore =
+    [
+      { label: "France", sales: 500, profit: 50, region: "EU" },
+      { label: "Germany", sales: 450, profit: 48, region: "EU" },
+      { label: "UK", sales: 700, profit: 60, region: "EU" },
+      { label: "USA", sales: 2000, profit: 250, region: "America" },
+      { label: "Canada", sales: 600, profit: 30, region: "America" },
+      { label: "Brazil", sales: 450, profit: 30, region: "America" },
+      { label: "China", sales: 500, profit: 40, region: "Asia" },
+      { label: "Japan", sales: 900, profit: 100, region: "Asia" }
+  ];
+  // A pageable list of categorized items from dataStore, that uses the default item renderer,
+  // mapping the sales property of items to righttext and using the region property
+  // as the item category.
+  var list = new PageableList({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+  list.style.height = "100%";
+  list.placeAt(document.body);
+});
+```
+
+Note : When using array you must also define a function in respond of an event -> more details here :
+[Element Events](#events)
 
 <a name="configuration"></a>
 ## Element Configuration
@@ -250,7 +279,32 @@ No specific Mixin is currently provided for this widget.
 
 See also [`deliteful/list/List` element events](./List.md#events) for the element events inherited from the `deliteful/list/List` widget.
 
-No specific event is emitted by this widget.
+In the case of one uses an array as the store, an event "new-query-asked" is emitted when all the items contained in the list
+are displayed.
+Also one must define the following function :
+
+```js
+require(["deliteful/list/PageableList", "requirejs-domready/domReady!"],
+  function (PageableList) {
+  // Create a memory store for the list and initialize it
+  var dataStore = [...];
+  var list = new PageableList({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+  list.on("new-query-asked", function(evt) {
+		evt.setPromise(new Promise (function (resolve) {
+			...
+			//return the elements asked by the query in the resolve promise (can be [])
+			resolve(list.store.slice(evt.start, evt.end));
+		}))
+	});
+  list.style.height = "100%";
+  list.placeAt(document.body);
+});
+```
+
+The event is send by the function fetchRange() of `delite/Store` which can not finish its execution until a promise is resolved.
+One can use the function in response of the event to add items in the array and achieve the query.
+The function must then use the function setPromise of the event in arguments and create a promise to resolve.
+The promise resolved must return an array representing the items asked.
 
 <a name="enterprise"></a>
 ## Enterprise Use
