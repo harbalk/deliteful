@@ -41,12 +41,17 @@
 				return item.title.split("order ")[1];
 			};
 
-			for (var i = 0; i < 100; i++) {
+			for (var i = 0; i < 10; i++) {
 				list.store.push({title:"Programmatic item of order " + i});
 			}
 
 			list.placeAt(document.body);
 			document.body.style.display = "";
+
+			window.setTimeout(function() {
+				list.store.push({title:"Programmatic item of order 10"});
+			},2000);
+
 		});
 	</script>
 </head>

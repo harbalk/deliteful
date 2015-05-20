@@ -31,10 +31,24 @@
 				arr.push({title:"Programmatic item of order " + i});
 			}
 
-			list.on("new-query-asked", function() {
-				window.setTimeout(function() {
-					list.store = list.store.concat(arr.slice(list.store.length, list.store.length + 20));},1000);
-				//list.store = list.store.concat(arr.slice(list.store.length, list.store.length + 20));
+//			list.on("new-query-asked", function() {
+//				window.setTimeout(function() {
+//					list.store = list.store.concat(arr.slice(list.store.length, list.store.length + 20));},1000);
+//				//list.store = list.store.concat(arr.slice(list.store.length, list.store.length + 20));
+//			});
+
+			list.on("new-query-asked", function(evt) {
+				evt.setPromise(new Promise (function (resolve) {
+					window.setTimeout(function () {
+						var t = list.store.length;
+						if (t + 2 * (evt.end - evt.start) < arr.length) {
+							for (i = list.store.length; i < t + 2 * (evt.end - evt.start); i++) {
+								list.store[i] = arr[i];
+							}
+						}
+						resolve(list.store.slice(evt.start, evt.end));
+					}, 1000);
+				}))
 			});
 
 			list.store = arr.slice(0,20);
@@ -50,6 +64,12 @@
 
 			list.placeAt(document.body);
 			document.body.style.display = "";
+
+
+			window.setTimeout(function() {
+				list.store.shift();
+			},2000);
+
 		});
 	</script>
 </head>
