@@ -139,10 +139,10 @@ to `"none"` in order to remove the default scrolling capability.
 <a name="store"></a>
 ### Store capabilities
 
-#### Store instanciation
+#### Store instantiation
 
 No store is created by default and one has to provided to the list for it to display its items.
-The store can be instanciate with 3 different ways.
+The store can be instantiate with 3 different ways.
 
 ##### Declaratively
 
@@ -156,7 +156,7 @@ The store can be instanciate with 3 different ways.
 <d-list store="myStore"></d-list>
 ```
 
-##### Programmaticaly with a `dstore/Store`
+##### Programmatically with a `dstore/Store`
 
 ```js
 require(["dstore/Memory", "dstore/Trackable", "deliteful/list/List"], function (Memory, Trackable, List) {
@@ -174,7 +174,7 @@ If the provided store is trackable (see [dstore documentation](https://github.co
 `dstore/Trackable`, the widget will react to **addition, deletion, move and update** of the store content and
 refresh its rendering accordingly.
 
-##### Programmaticaly with an array
+##### Programmatically with an array
 
 ```js
 require(["decor/ObservableArray", "decor/Observable", "deliteful/list/List"], function (ObservableArray, Observable, List) {
