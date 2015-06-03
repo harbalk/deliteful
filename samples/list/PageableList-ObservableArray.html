@@ -27,8 +27,9 @@
 			list.id = "L";
 
 			list.store = new ObservableArray();
-			var arr = [];
 
+			//array representing a database
+			var arr = [];
 			for (var i = 0; i < 100; i++) {
 				arr.push({title:"Programmatic item of order " + i});
 			}
@@ -47,17 +48,13 @@
 					}, 1000);
 				}))
 			});
-
 			for (i =0; i < 20; i++){
 				list.store.set(i, arr[i]);
 			}
-
 			list.pageLength = 5;
 			list.maxPages = 2;
-
 			list.setAttribute("aria-label", "Sample list that uses attributes for store item to renderer item mapping");
 			list.labelAttr = "title";
-
 			list.righttextFunc = function (item) {
 				return item.title.split("order ")[1];
 			};
