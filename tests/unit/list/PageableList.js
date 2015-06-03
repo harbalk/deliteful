@@ -1252,7 +1252,7 @@ define([
 			clickNextPageLoader(list).then(dfd.callback(function () {
 				list.deliver();
 				assert.strictEqual("item 10",
-						removeTabsAndReturns(list.getItemRendererByIndex(list._firstLoaded).textContent));
+						removeTabsAndReturns(list.getItemRendererByIndex(0).textContent));
 			}));
 			return dfd;
 		},
