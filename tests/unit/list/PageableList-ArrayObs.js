@@ -133,21 +133,19 @@ define([
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
 			list = new PageableList({store: new ObservableArray()});
-			for (var i = 0; i < 92; i++) {
-				list.store.push({label: "item " + i, id: i});
-			}
 			list.pageLength = 23;
 			list.maxPages = 2;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
+			for (var i = 0; i < 92; i++) {
+				list.store.push({label: "item " + i, id: i});
+			}
 			document.body.appendChild(list);
 			list.attachedCallback();
 			list.deliver();
 			waitForCondition(function () {
-				return list.textContent.indexOf("item 22") >= 0;
+				return (list.textContent.indexOf("item 22") >= 0 && list.wrap_store !== null);
 			}, TIMEOUT, INTERVAL).then(dfd.rejectOnError(function () {
 				// initial load (page 1 loaded)
 				assertList(list, 0, 22, [], false, true, "initial load");
@@ -295,9 +293,7 @@ define([
 				list.maxPages = 2;
 				list.style.height = "200px";
 				list.on("new-query-asked", function (evt) {
-					evt.setPromise(new Promise(function (resolve) {
-						resolve(list.store.slice(evt.start, evt.end));
-					}));
+					evt.resol(list.store.slice(evt.start, evt.end));
 				});
 				document.body.appendChild(list);
 				list.attachedCallback();
@@ -522,9 +518,7 @@ define([
 			list.pageLength = 23;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -631,7 +625,8 @@ define([
 			}
 		},
 		"itemAdded": function () {
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList();
+			list.store = new ObservableArray();
 			list.pageLength = 100;
 			var resetList = function () {
 				list._idPages = [[1, 2, 3], [4, 5, 6]];
@@ -739,9 +734,7 @@ define([
 			list.pageLength = 20;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -791,9 +784,7 @@ define([
 			list.maxPages = 0;
 			list.categoryAttr = "category";
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -849,9 +840,7 @@ define([
 			list.pageLength = 20;
 			list.maxPages = 2;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -918,9 +907,7 @@ define([
 				list.pageLength = 25;
 				list.maxPages = 2;
 				list.on("new-query-asked", function (evt) {
-					evt.setPromise(new Promise(function (resolve) {
-						resolve(list.store.slice(evt.start, evt.end));
-					}));
+					evt.resol(list.store.slice(evt.start, evt.end));
 				});
 				document.body.appendChild(list);
 				list.attachedCallback();
@@ -974,9 +961,7 @@ define([
 			list.pageLength = 100;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -1006,9 +991,7 @@ define([
 			list.pageLength = 100;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -1037,9 +1020,7 @@ define([
 			list.pageLength = 100;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -1069,9 +1050,7 @@ define([
 			list.pageLength = 100;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -1100,9 +1079,7 @@ define([
 			list.pageLength = 101;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -1127,9 +1104,7 @@ define([
 			list.pageLength = 101;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -1153,9 +1128,7 @@ define([
 			list.pageLength = 101;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -1180,9 +1153,7 @@ define([
 			list.pageLength = 101;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();
@@ -1406,9 +1377,7 @@ define([
 			list.pageLength = 20;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
-				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
-				}));
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 			document.body.appendChild(list);
 			list.attachedCallback();

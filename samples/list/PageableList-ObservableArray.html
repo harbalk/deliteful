@@ -34,17 +34,13 @@
 			}
 
 			list.on("new-query-asked", function(evt) {
-				evt.setPromise(new Promise (function (resolve) {
-					window.setTimeout(function () {
-						var t = list.store.length;
-						if (t + 2 * (evt.end - evt.start) < arr.length) {
-							for (i = list.store.length; i < t + 2 * (evt.end - evt.start); i++) {
-								list.store.set(i, arr[i]);
-							}
-						}
-						resolve(list.store.slice(evt.start, evt.end));
-					}, 1000);
-				}))
+				var t = list.store.length;
+				if (t + 2 * (evt.end - evt.start) < arr.length) {
+					for (i = list.store.length; i < t + 2 * (evt.end - evt.start); i++) {
+						list.store.set(i, arr[i]);
+					}
+				}
+				evt.resol(list.store.slice(evt.start, evt.end));
 			});
 
 			for (i =0; i < 20; i++){
@@ -65,7 +61,7 @@
 			document.body.style.display = "";
 
 			window.setTimeout(function() {
-				list.store[0].set("title", "Carotte");
+				list.store.splice(0,1);
 			},1000);
 
 			window.setTimeout(function() {
