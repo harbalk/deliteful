@@ -384,7 +384,7 @@ define([
 				this._rangeSpec.start = this._lastLoaded + 1;
 				this._rangeSpec.count = this.pageLength;
 			}
-			var results = this.fetchRange(this._collection, {start: this._rangeSpec.start,
+			var results = this._collection.fetchRange({start: this._rangeSpec.start,
 				end: this._rangeSpec.start + this._rangeSpec.count});
 			return results.then(function (items) {
 				var page = items.map(function (item) {
@@ -414,7 +414,7 @@ define([
 				this._rangeSpec.count += this._rangeSpec.start;
 				this._rangeSpec.start = 0;
 			}
-			var results = this.fetchRange(this._collection, {start: this._rangeSpec.start,
+			var results = this._collection.fetchRange({start: this._rangeSpec.start,
 				end: this._rangeSpec.start + this._rangeSpec.count});
 			return results.then(function (items) {
 				var page = items.map(function (item) {
