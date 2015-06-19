@@ -1011,7 +1011,8 @@ define([
 		"Add item to undisplayed page": function () {
 			return testHelpers["Helper: add item to undisplayed page"](this.async(3000), false);
 		},
-		"Update items in displayed page with index page > maxpages": function (/*Deferred*/dfd) {
+		"Update items in displayed page with index page > maxpages": function () {
+			var dfd = this.async(3000);
 			list = new PageableList({store: new Store()});
 			for (var i = 0; i < 20; i++) {
 				list.store.add({label: "item " + i, id: i});
@@ -1026,8 +1027,7 @@ define([
 			clickNextPageLoader(list).then(dfd.callback(function () {
 				list.store.put({label: "item A", id: 6});
 				list.deliver();
-				assertList(list, 5, 9, [], false, true, "assert 2");
-				assert.strictEqual(list.children[2].innerText(), "item A");
+				assert.strictEqual(removeTabsAndReturns(list.children[2].textContent), "item A");
 			}));
 			return dfd;
 		},
