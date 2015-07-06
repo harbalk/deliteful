@@ -26,7 +26,7 @@
 			var list  = register.createElement("d-pageable-list");
 			list.id = "L";
 
-			list.store = new ObservableArray();
+			list.source = new ObservableArray();
 
 			//array representing a database
 			var arr = [];
@@ -38,18 +38,18 @@
 			list.on("new-query-asked", function(evt) {
 				evt.setPromise(new Promise (function (resolve) {
 					window.setTimeout(function () {
-						var size = list.store.length;
+						var size = list.source.length;
 						if (size + 2 * (evt.end - evt.start) < arr.length) {
-							for (i = list.store.length; i < size + 2 * (evt.end - evt.start); i++) {
-								list.store.set(i, arr[i]);
+							for (i = list.source.length; i < size + 2 * (evt.end - evt.start); i++) {
+								list.source.set(i, arr[i]);
 							}
 						}
-						resolve(list.store.slice(evt.start, evt.end));
+						resolve(list.source.slice(evt.start, evt.end));
 					}, 1000);
 				}))
 			});
 			for (i =0; i < 20; i++){
-				list.store.set(i, arr[i]);
+				list.source.set(i, arr[i]);
 			}
 			list.pageLength = 5;
 			list.maxPages = 2;

@@ -26,7 +26,7 @@
 			var list  = register.createElement("d-list");
 			list.id = "L";
 
-			list.store = new ObservableArray();
+			list.source = new ObservableArray();
 			var arr = [];
 
 			for (var i = 0; i < 100; i++) {
@@ -38,7 +38,7 @@
 				Observable.observe(obj, function (changeRecords) {
 					console.log("Observe User");
 				});
-				list.store.set(i, obj);
+				list.source.set(i, obj);
 			}
 
 			list.setAttribute("aria-label", "Sample list that uses attributes for store item to renderer item mapping");
@@ -49,6 +49,11 @@
 			};
 			list.placeAt(document.body);
 			document.body.style.display = "";
+
+
+			window.setTimeout(function() {
+				list.source[0].set("title", "Pomme");
+			},2000);
 		});
 	</script>
 </head>

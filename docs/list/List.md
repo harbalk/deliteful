@@ -11,7 +11,7 @@ are retrieved from an array or a store object from the [dstore](http://dstorejs.
 
 The list inherits from the [`delite/Store`](/delite/docs/master/Store.md) class and as such any valid `dstore/Store` 
 implementation can be used to provide data to the list. No store is provided by default and the application developer 
-has to provide one created either programmatically or in markup using [`deliteful/Store`](../Store.md) custom element.
+has to provide one created either programmatically or in markup.
 
 Items rendered by the list are standard javascript objects. The list delegates the rendering of its items to an _item renderer_ widget.
 
@@ -51,7 +51,11 @@ See [`delite/Widget`](/delite/docs/master/Widget.md) for full details on how ins
 ### Declarative Instantiation
 
 ```html
-<d-store id="myStore">
+<!-- A list of categorized items that uses the default item renderer, -->
+<!-- mapping the sales property of items to righttext, and using the -->
+<!-- region property as the item category. The store is referenced through -->
+<!-- the source property -->
+<d-list righttextAttr="sales" categoryAttr="region">
 	<!-- Add the following items to the store -->
 	{ "label": "France", "sales": 500, "profit": 50, "region": "EU" },
 	{ "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
@@ -61,22 +65,16 @@ See [`delite/Widget`](/delite/docs/master/Widget.md) for full details on how ins
 	{ "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
 	{ "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
 	{ "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
-</d-store>
-<!-- A list of categorized items that uses the default item renderer, -->
-<!-- mapping the sales property of items to righttext, and using the -->
-<!-- region property as the item category. The store is referenced through -->
-<!-- the store property -->
-<d-list righttextAttr="sales" categoryAttr="region" store="myStore">
 </d-list>
 ```
 ### Programmatic Instantiation
 
-#### With `dstore/Memory` as store
+#### With `dstore/Memory` as source
 
 ```js
 require(["dstore/Memory", "deliteful/list/List", "requirejs-domready/domReady!"], function (Memory, List) {
 	// Create a memory store for the list and initialize it
-	var dataStore = new Memory({idProperty: "label", data:
+	var dataSource = new Memory({idProperty: "label", data:
 		[
 			{ label: "France", sales: 500, profit: 50, region: "EU" },
 			{ label: "Germany", sales: 450, profit: 48, region: "EU" },
@@ -87,20 +85,20 @@ require(["dstore/Memory", "deliteful/list/List", "requirejs-domready/domReady!"]
 			{ label: "China", sales: 500, profit: 40, region: "Asia" },
 			{ label: "Japan", sales: 900, profit: 100, region: "Asia" }
 	]});
-	// A list of categorized items from dataStore, that uses the default item renderer,
+	// A list of categorized items from dataSource, that uses the default item renderer,
 	// mapping the sales property of items to righttext and using the region property
 	// as the item category.
-	var list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+	var list = new List({source: dataSource, righttextAttr: "sales", categoryAttr: "region"});
 	list.placeAt(document.body);
 });
 ```
 
-#### With an array as store
+#### With an array as source
 
 ```js
 require(["deliteful/list/List", "requirejs-domready/domReady!"], function (List) {
 	// Create a memory store for the list and initialize it
-	var dataStore =
+	var dataSource =
 		[
 			{ label: "France", sales: 500, profit: 50, region: "EU" },
 			{ label: "Germany", sales: 450, profit: 48, region: "EU" },
@@ -111,10 +109,10 @@ require(["deliteful/list/List", "requirejs-domready/domReady!"], function (List)
 			{ label: "China", sales: 500, profit: 40, region: "Asia" },
 			{ label: "Japan", sales: 900, profit: 100, region: "Asia" }
 	];
-	// A list of categorized items from dataStore, that uses the default item renderer,
+	// A list of categorized items from dataSource, that uses the default item renderer,
 	// mapping the sales property of items to righttext and using the region property
 	// as the item category.
-	var list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+	var list = new List({source: dataSource, righttextAttr: "sales", categoryAttr: "region"});
 	list.placeAt(document.body);
 });
 ```
@@ -141,19 +139,18 @@ to `"none"` in order to remove the default scrolling capability.
 
 #### Store instanciation
 
-No store is created by default and one has to provided to the list for it to display its items.
-The store can be instanciate with 3 different ways.
+No source is created by default and one has to provided to the list for it to display its items.
+The source can be instanciate with 3 different ways.
 
 ##### Declaratively
 
 ```html
-<d-store id="myStore">
+<d-list>
     {"label": "First item", "iconclass": "my-icon-class-a"},
     {"label": "Second item", "iconclass": "my-icon-class-b"},
     ...,
     {"label": "Last item", "iconclass": "my-icon-class-z"}
-</d-store>
-<d-list store="myStore"></d-list>
+</d-list>
 ```
 
 ##### Programmaticaly with a `dstore/Store`
@@ -161,17 +158,17 @@ The store can be instanciate with 3 different ways.
 ```js
 require(["dstore/Memory", "dstore/Trackable", "deliteful/list/List"], function (Memory, Trackable, List) {
     var list = new List();
-    var store = new (Memory.createSubclass([Trackable], {}))();
+    var source = new (Memory.createSubclass([Trackable], {}))();
     var item1 = {...};
     var item2 = {...};
-    store.add(item1);
-    store.add(item2, {beforeId: item1.id});
-    list.store = store;
+    source.add(item1);
+    source.add(item2, {beforeId: item1.id});
+    list.source = source;
 });
 ```
 
-If the provided store is trackable (see [dstore documentation](https://github.com/sitepen/dstore)), that is when it extends
-`dstore/Trackable`, the widget will react to **addition, deletion, move and update** of the store content and
+If the provided source is trackable (see [dstore documentation](https://github.com/sitepen/dstore)), that is when it extends
+`dstore/Trackable`, the widget will react to **addition, deletion, move and update** of the source content and
 refresh its rendering accordingly.
 
 ##### Programmaticaly with an array
@@ -179,23 +176,23 @@ refresh its rendering accordingly.
 ```js
 require(["decor/ObservableArray", "decor/Observable", "deliteful/list/List"], function (ObservableArray, Observable, List) {
     var list = new List();
-    var store = new ObservableArray();
+    var source = new ObservableArray();
     var item1 = new Observable({...});
     var item2 = new Observable({...});
-    store.push(item1);
-    store.push(item2);
-    list.store = store;
+    source.push(item1);
+    source.push(item2);
+    list.source = source;
 });
 ```
 
-If the provided store is observable, that is when it is an `decor/ObservableArray`, the widget will react to **addition,
-deletion and move** of the store content and refresh its rendering accordingly.
+If the provided source is observable, that is when it is an `decor/ObservableArray`, the widget will react to **addition,
+deletion and move** of the source content and refresh its rendering accordingly.
 If the items of the array are `decor/Observable`, the widget will also react to **update**.
 
 #### Mapping capability
 
 Because the List widget inherit from [`delite/StoreMap`](/delite/docs/master/StoreMap.md), you can redefine at will the mapping between
-your store items and the ones expected by the renderer using mapping attributes and functions, as in the following example:
+your source items and the ones expected by the renderer using mapping attributes and functions, as in the following example:
 
 ```js
 require([
@@ -203,16 +200,16 @@ require([
 		"requirejs-domready/domReady!"
 	], function (List) {
 		var list = new List();
-		// Map the title property of a store item to
+		// Map the title property of a source item to
 		// the label property supported by the renderer
 		list.labelAttr = "title";
 		// Map a substring of the title property
-		// of a store item to the righttext property
+		// of a source item to the righttext property
 		// supported by the renderer
-		list.righttextFunc = function (item, store, value) {
+		list.righttextFunc = function (item, source, value) {
 			return item.title.split(" ")[0];
 		};
-		list.store.add({title: "first item"});
+		list.source.add({title: "first item"});
 		...
 		list.placeAt(document.body);
 });
@@ -221,7 +218,7 @@ require([
 See the [`delite/StoreMap`](/delite/docs/master/StoreMap.md) documentation for more information about all the available mapping options.
 
 If you were not to use the `delite/StoreMap` capabilities but decided to redefine the `itemToRenderItem(item)` method (inherited from [`delite/Store`](/delite/docs/master/Store.md)),
-be aware that your custom implementation of the method MUST return items that have the same identity than the corresponding store items, as the List
+be aware that your custom implementation of the method MUST return items that have the same identity than the corresponding source items, as the List
 is relying on it.
 
 Here is an example of redefinition of the `itemToRenderItem(item)` method, using the default store with an `identityAttribute` value set to the default one, `id`:
@@ -261,28 +258,28 @@ example:
 ```js
 var list = new List();
 list.categoryAttribute = "category";
-list.store = ...;
-list.store.add({label: "first item", category: "Category A"});
-list.store.add({label: "second item", category: "Category A"});
-list.store.add({label: "third item", category: "Category B"});
+list.source = ...;
+list.source.add({label: "first item", category: "Category A"});
+list.source.add({label: "second item", category: "Category A"});
+list.source.add({label: "third item", category: "Category B"});
 ```
 
 <iframe width="100%" height="300" allowfullscreen="allowfullscreen" frameborder="0" 
 src="http://jsfiddle.net/ibmjs/7Yr6E/embedded/result,js">
 <a href="http://jsfiddle.net/ibmjs/7Yr6E/">checkout the sample on JSFiddle</a></iframe>
 
-An alternative is to set `categoryFunc` to a function that extract the category from the store item,
+An alternative is to set `categoryFunc` to a function that extract the category from the source item,
 as in the following example:
 
 ```js
 var list = new List();
-list.categoryFunc = function(item, store) {
+list.categoryFunc = function(item, source) {
 	return item.category;
 });
-list.store = ...;
-list.store.add({label: "first item", category: "Category A"});
-list.store.add({label: "second item", category: "Category A"});
-list.store.add({label: "third item", category: "Category B"});
+list.source = ...;
+list.source.add({label: "first item", category: "Category A"});
+list.source.add({label: "second item", category: "Category A"});
+list.source.add({label: "third item", category: "Category B"});
 ```
 
 As with the rendering of items, the actual rendering of the categories in the list is delegated to a category renderer widget.
@@ -440,7 +437,7 @@ achieved by listening to regular click events. It is typically easier to wait fo
 to them at the list level as follows:
 
 ```html
-<d-list store="store" onclick="actionHandler(event)"></d-list>
+<d-list onclick="actionHandler(event)"></d-list>
 ```
 
 with
@@ -495,10 +492,10 @@ No Mixin is currently provided for this widget.
 
 ### Store query
 
-When the widget has finished rendering the items queried from the store, it emits a `query-success` event. The `renderItems` property of the event
+When the widget has finished rendering the items queried from the source, it emits a `query-success` event. The `renderItems` property of the event
 is an array of the items displayed by the widget.
 
-If the widget fails to query its store to retrieve the items to render, it emits a `query-error` event (see [Store capabilities](#store) for more information).
+If the widget fails to query its source to retrieve the items to render, it emits a `query-error` event (see [Store capabilities](#store) for more information).
 
 <a name="selection-event"></a>
 ### Selection
@@ -509,7 +506,7 @@ contains the previous selection, and its `newValue` property contains the new se
 You can register the event programmatically using the `Widget.on` method or in markup as follows:
 
 ```html
-<d-list store="store" on-selection-change="selectionHandler(event)"></d-list>
+<d-list on-selection-change="selectionHandler(event)"></d-list>
 ```
 
 with

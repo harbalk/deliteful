@@ -39,12 +39,12 @@ define([
 					if (this.list) {
 						this.list.destroy();
 					}
-					this.list = new ListConstructor({store: new ObservableArray()});
+					this.list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(this.list);
 					this.list.attachedCallback();
-					this.list.store.push({label: "item 1"});
-					this.list.store.push({label: "item 2"});
-					this.list.store.push({label: "item 3"});
+					this.list.source.push({label: "item 1"});
+					this.list.source.push({label: "item 2"});
+					this.list.source.push({label: "item 3"});
 					this.list.deliver();
 				},
 				"baseClass update" : function () {
@@ -102,13 +102,13 @@ define([
 				},
 				"getItemRenderers": function () {
 					var d = this.async(1500);
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.callback(function () {
 						list.attachedCallback();
-						list.store.push({label: "item 1"});
-						list.store.push({label: "item 2"});
-						list.store.push({label: "item 3"});
+						list.source.push({label: "item 1"});
+						list.source.push({label: "item 2"});
+						list.source.push({label: "item 3"});
 						list.deliver();
 						var nodeList = list.getItemRenderers();
 						assert.strictEqual(nodeList.length, 3);
@@ -120,20 +120,20 @@ define([
 				},
 				"getRendererByItemId": function () {
 					var d = this.async(1500);
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.callback(function () {
 						list.attachedCallback();
-						list.store.push({id: "0", label: "item 1"});
-						list.store.push({id: "1", label: "item 2"});
-						list.store.push({id: "2", label: "item 3"});
+						list.source.push({id: "0", label: "item 1"});
+						list.source.push({id: "1", label: "item 2"});
+						list.source.push({id: "2", label: "item 3"});
 						list.deliver();
 						var children = list.children;
-						assert.strictEqual(list.getRendererByItemId(list.store[0].id),
+						assert.strictEqual(list.getRendererByItemId(list.source[0].id),
 							children[0], "first renderer");
-						assert.strictEqual(list.getRendererByItemId(list.store[1].id),
+						assert.strictEqual(list.getRendererByItemId(list.source[1].id),
 							children[1], "second renderer");
-						assert.strictEqual(list.getRendererByItemId(list.store[2].id),
+						assert.strictEqual(list.getRendererByItemId(list.source[2].id),
 							children[2], "third renderer");
 						assert.isNull(list.getRendererByItemId("I'm not an existing id"), "non list item");
 					}));
@@ -141,13 +141,13 @@ define([
 				},
 				"getItemRendererIndex": function () {
 					var d = this.async(1500);
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.callback(function () {
 						list.attachedCallback();
-						list.store.push({id: "0", label: "item 1"});
-						list.store.push({id: "1", label: "item 2"});
-						list.store.push({id: "2", label: "item 3"});
+						list.source.push({id: "0", label: "item 1"});
+						list.source.push({id: "1", label: "item 2"});
+						list.source.push({id: "2", label: "item 3"});
 						list.deliver();
 						var children = list.children;
 						assert.strictEqual(0, list.getItemRendererIndex(children[0]), "first renderer");
@@ -159,13 +159,13 @@ define([
 				},
 				"getEnclosingRenderer": function () {
 					var d = this.async(1500);
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.callback(function () {
 						list.attachedCallback();
-						list.store.push({id: "0", label: "item 1"});
-						list.store.push({id: "1", label: "item 2"});
-						list.store.push({id: "2", label: "item 3"});
+						list.source.push({id: "0", label: "item 1"});
+						list.source.push({id: "1", label: "item 2"});
+						list.source.push({id: "2", label: "item 3"});
 						list.deliver();
 						var children = list.children;
 						assert.strictEqual(list.getEnclosingRenderer(children[0]), children[0], "first");
@@ -176,13 +176,13 @@ define([
 				},
 				"_renderNewItems": function () {
 					var d = this.async(1500);
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.callback(function () {
 						list.attachedCallback();
-						list.store.push({id: "0", label: "item 1"});
-						list.store.push({id: "1", label: "item 2"});
-						list.store.push({id: "2", label: "item 3"});
+						list.source.push({id: "0", label: "item 1"});
+						list.source.push({id: "1", label: "item 2"});
+						list.source.push({id: "2", label: "item 3"});
 						list.deliver();
 						list._renderNewItems([{label: "item a"}, {label: "item b"}, {label: "item c"}], true);
 						var children = list.children;
@@ -201,13 +201,13 @@ define([
 				},
 				"_getFirst": function () {
 					var d = this.async(1500);
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.callback(function () {
 						list.attachedCallback();
-						list.store.push({id: "0", label: "item 1"});
-						list.store.push({id: "1", label: "item 2"});
-						list.store.push({id: "2", label: "item 3"});
+						list.source.push({id: "0", label: "item 1"});
+						list.source.push({id: "1", label: "item 2"});
+						list.source.push({id: "2", label: "item 3"});
 						list.deliver();
 						var children = list.children;
 						assert.strictEqual(list._getFirst(), children[0].renderNode);
@@ -223,13 +223,13 @@ define([
 				},
 				"_getLast": function () {
 					var d = this.async(1500);
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.callback(function () {
 						list.attachedCallback();
-						list.store.push({id: "0", label: "item 1"});
-						list.store.push({id: "1", label: "item 2"});
-						list.store.push({id: "2", label: "item 3"});
+						list.source.push({id: "0", label: "item 1"});
+						list.source.push({id: "1", label: "item 2"});
+						list.source.push({id: "2", label: "item 3"});
 						list.deliver();
 						var children = list.children;
 						assert.strictEqual(list._getLast(), children[2].renderNode);
@@ -240,16 +240,16 @@ define([
 					var d = this.async(3000);
 					var TIMEOUT = 2000;
 					var INTERVAL = 100;
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.rejectOnError(function () {
 						list.attachedCallback();
 						for (var i = 0; i < 3; i++) {
 							var obj = new Observable({id: i, label: "item " + i});
-							list.store.set(i, obj);
+							list.source.set(i, obj);
 						}
 						list.deliver();
-						list.store[0].set("label", "item a");
+						list.source[0].set("label", "item a");
 						list.deliver();
 						var renderer = list.children[0];
 						waitForCondition(function () {
@@ -265,18 +265,18 @@ define([
 					var d = this.async(1500);
 					var TIMEOUT = 2000;
 					var INTERVAL = 100;
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.rejectOnError(function () {
 						list.attachedCallback();
 						for (var i = 0; i < 3; i++) {
 							var obj = new Observable({id: i, label: "item " + i});
-							list.store.set(i, obj);
+							list.source.set(i, obj);
 						}
 						list.deliver();
 						// add
-						list.store[0].set("iconclass", "my-icon");
-						list.store[0].set("label", "item a");
+						list.source[0].set("iconclass", "my-icon");
+						list.source[0].set("label", "item a");
 						list.deliver();
 						var renderer = list.children[0];
 						waitForCondition(function () {
@@ -288,7 +288,7 @@ define([
 							assert.strictEqual(renderer.firstChild.children[1].className, "d-list-item-label");
 							assert.strictEqual(renderer.firstChild.children[1].innerHTML, "item a");
 							// update
-							list.store[0].set("iconclass", "my-other-icon");
+							list.source[0].set("iconclass", "my-other-icon");
 							list.deliver();
 							renderer = list.children[0];
 							waitForCondition(function () {
@@ -301,7 +301,7 @@ define([
 								assert.strictEqual(renderer.firstChild.children[1].className, "d-list-item-label");
 								assert.strictEqual(renderer.firstChild.children[1].innerHTML, "item a");
 								// remove
-								list.store.set(0, {id: 0, label: "item b"});
+								list.source.set(0, {id: 0, label: "item b"});
 								list.deliver();
 								renderer = list.children[0];
 								waitForCondition(function () {
@@ -321,11 +321,11 @@ define([
 					var d = this.async(1500);
 					var list = this.parent.list;
 					list.destroy();
-					list = new ListConstructor({store: new ObservableArray()});
+					list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.attachedCallback();
 					list.on("query-success", d.callback(function () {
-						list.store.push({label: "item 1", category: "category 1"});
+						list.source.push({label: "item 1", category: "category 1"});
 						list.deliver();
 						assert.strictEqual(list.children[0].item.category, "category 1");
 					}));
@@ -335,57 +335,36 @@ define([
 					var list = this.parent.list;
 					var def = this.async(1000);
 					list.destroy();
-					list = new ListConstructor({store: new ObservableArray()});
-					list.on("query-success", function (evt) {
+					list = new ListConstructor({source: new ObservableArray()});
+					list.on("query-success", def.callback(function (evt) {
 						var renderItems = evt.renderItems;
 						assert.isNotNull(renderItems);
 						assert.strictEqual(renderItems.length, 2);
 						assert.strictEqual(renderItems[0].label, "item 1");
 						assert.strictEqual(renderItems[1].label, "item 2");
 						def.resolve();
-					});
+					}));
 					list.labelAttr = "name";
-					list.store.push({name: "item 1"});
-					list.store.push({name: "item 2"});
+					list.source.push({name: "item 1"});
+					list.source.push({name: "item 2"});
+					list.deliver();
 					document.body.appendChild(list);
 					list.attachedCallback();
 					return def;
 				},
-				//"query-error event": function () {
-				//	var list = this.parent.list;
-				//	var def = this.async(1500);
-				//	try {
-				//		var queryErrorEvt = null;
-				//		list.destroy();
-				//		list = new ListConstructor({store: null});
-				//		list.store.push();
-				//		list.on("query-error", function (evt) {
-				//			queryErrorEvt = evt;
-				//			assert.isNotNull(queryErrorEvt);
-				//			assert.strictEqual("Query Error X", queryErrorEvt.error, "error message");
-				//			assert(!list.hasAttribute("aria-busy"));
-				//			def.resolve();
-				//		});
-				//		document.body.appendChild(list);
-				//		list.attachedCallback();
-				//	} catch (e) {
-				//		def.reject(e);
-				//	}
-				//	return def;
-				//},
 				"first focus apply to the first visible child": function () {
 					var d = this.async(1500);
-					var list = new ListConstructor({store: new ObservableArray()});
+					var list = new ListConstructor({source: new ObservableArray()});
 					document.body.appendChild(list);
 					list.on("query-success", d.callback(function () {
 						list.attachedCallback();
-						list.store.push({id: "0", label: "item 1"});
-						list.store.push({id: "1", label: "item 2"});
-						list.store.push({id: "2", label: "item 3"});
+						list.source.push({id: "0", label: "item 1"});
+						list.source.push({id: "1", label: "item 2"});
+						list.source.push({id: "2", label: "item 3"});
 						list.deliver();
 						list.style.height = "200px";
 						for (var i = 0; i < 50; i++) {
-							list.store.push({label: "item " + i });
+							list.source.push({label: "item " + i });
 						}
 						list.focus();
 						list.deliver();
@@ -398,8 +377,6 @@ define([
 					return d;
 				},
 				teardown : function () {
-					//this.list.destroy();
-					//this.list = null;
 				}
 			};
 		}

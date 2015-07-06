@@ -132,15 +132,15 @@ define([
 			/*jshint maxlen: 135*/
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 92; i++) {
-				list.store.push({label: "item " + i, id: i});
+				list.source.push({label: "item " + i, id: i});
 			}
 			list.pageLength = 23;
 			list.maxPages = 2;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -158,8 +158,8 @@ define([
 					assert(list._idPages[0][i] === i);
 				}
 				// remove two items in the first page (page 1 size will be 21)
-				list.store.splice(0, 1); // remove item 0
-				list.store.splice(1, 1); // remove item 2
+				list.source.splice(0, 1); // remove item 0
+				list.source.splice(1, 1); // remove item 2
 				list.deliver();
 				assertList(list, 0, 22, [0, 2], false, true, "page 1 loaded");
 				// check internal pages references
@@ -175,8 +175,8 @@ define([
 					list.deliver();
 					assertList(list, 1, 45, [2], false, true, "page 1 and 2 loaded");
 					// remove to items in the second page (page 2 size will be 21)
-					list.store.splice(43, 1); // remove item 45
-					list.store.splice(41, 1); // remove item 43
+					list.source.splice(43, 1); // remove item 45
+					list.source.splice(41, 1); // remove item 43
 					list.deliver();
 					assertList(list, 1, 44, [2, 43], false, true, "after removal");
 					// load next page (pages 2 and 3 loaded)
@@ -225,9 +225,9 @@ define([
 		"Helper: Removing items in next non displayed page": function (/*Deferred*/dfd) {
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 92; i++) {
-				list.store.push({label: "item " + i, id: i});
+				list.source.push({label: "item " + i, id: i});
 			}
 			list.pageLength = 23;
 			list.maxPages = 2;
@@ -240,8 +240,8 @@ define([
 			}, TIMEOUT, INTERVAL).then(dfd.rejectOnError(function () {
 				assertList(list, 0, 22, [], false, true, "assert 1");
 				// Remove items in the next page
-				list.store.splice(23, 1); // remove item 23
-				list.store.splice(24, 1); // remove item 25
+				list.source.splice(23, 1); // remove item 23
+				list.source.splice(24, 1); // remove item 25
 				clickNextPageLoader(list).then(dfd.callback(function () {
 					list.deliver();
 					assertList(list, 0, 47, [23, 25], false, true, "assert 2");
@@ -253,9 +253,9 @@ define([
 			function (/*Deferred*/dfd) {
 				var TIMEOUT = 2000;
 				var INTERVAL = 100;
-				list = new PageableList({store: new ObservableArray()});
+				list = new PageableList({source: new ObservableArray()});
 				for (var i = 0; i < 92; i++) {
-					list.store.push({label: "item " + i, id: i});
+					list.source.push({label: "item " + i, id: i});
 				}
 				list.pageLength = 23;
 				list.maxPages = 2;
@@ -271,9 +271,9 @@ define([
 							// initial load (page 1 loaded)
 							assertList(list, 23, 68, [], true, true, "assert 1");
 							// Remove items in the previous page
-							list.store.splice(0, 1); // remove item 0
-							list.store.splice(11, 1); // remove item 12
-							list.store.splice(20, 1); // remove item 22
+							list.source.splice(0, 1); // remove item 0
+							list.source.splice(11, 1); // remove item 12
+							list.source.splice(20, 1); // remove item 22
 							clickPreviousPageLoader(list).then(dfd.callback(function () {
 								list.deliver();
 								assertList(list, 1, 45, [12, 22], false, true, "assert 2");
@@ -287,16 +287,16 @@ define([
 			function (/*Deferred*/dfd) {
 				var TIMEOUT = 2000;
 				var INTERVAL = 100;
-				list = new PageableList({store: new ObservableArray()});
+				list = new PageableList({source: new ObservableArray()});
 				for (var i = 0; i < 91; i++) {
-					list.store.push({label: "item " + i, id: i});
+					list.source.push({label: "item " + i, id: i});
 				}
 				list.pageLength = 23;
 				list.maxPages = 2;
 				list.style.height = "200px";
 				list.on("new-query-asked", function (evt) {
 					evt.setPromise(new Promise(function (resolve) {
-						resolve(list.store.slice(evt.start, evt.end));
+						resolve(list.source.slice(evt.start, evt.end));
 					}));
 				});
 				document.body.appendChild(list);
@@ -310,7 +310,7 @@ define([
 						clickNextPageLoader(list).then(dfd.rejectOnError(function () {
 							clickNextPageLoader(list).then(dfd.rejectOnError(function () {
 								// remove item 45
-								list.store.splice(45, 1);
+								list.source.splice(45, 1);
 								// Click previous page loader two times
 								clickPreviousPageLoader(list).then(dfd.rejectOnError(function () {
 									clickPreviousPageLoader(list).then(dfd.rejectOnError(function () {
@@ -332,9 +332,9 @@ define([
 			function (/*Deferred*/dfd) {
 				var TIMEOUT = 2000;
 				var INTERVAL = 100;
-				list = new PageableList({store: new ObservableArray()});
+				list = new PageableList({source: new ObservableArray()});
 				for (var i = 0; i < 91; i++) {
-					list.store.push({label: "item " + i, id: i});
+					list.source.push({label: "item " + i, id: i});
 				}
 				list.pageLength = 23;
 				list.maxPages = 2;
@@ -349,7 +349,7 @@ define([
 					clickNextPageLoader(list).then(dfd.rejectOnError(function () {
 						clickNextPageLoader(list).then(dfd.callback(function () {
 							// remove all items in the first page
-							list.store.splice(0, 23);
+							list.source.splice(0, 23);
 							list.deliver();
 							// check that the previous page loader has been removed
 							assertList(list, 23, 68, [], false, true);
@@ -362,9 +362,9 @@ define([
 			/*jshint maxlen: 140*/
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 92; i++) {
-				list.store.push({id: i, label: "item " + i});
+				list.source.push({id: i, label: "item " + i});
 			}
 			list.pageLength = 23;
 			list.maxPages = 2;
@@ -374,8 +374,8 @@ define([
 			waitForCondition(function () {
 				return list.textContent.indexOf("item 22") >= 0;
 			}, TIMEOUT, INTERVAL).then(dfd.rejectOnError(function () {
-				list.store.splice(1, 0, {id: "A", label: "item A"});
-				list.store.splice(23, 0, {id: "B", label: "item B"});
+				list.source.splice(1, 0, {id: "A", label: "item A"});
+				list.source.splice(23, 0, {id: "B", label: "item B"});
 				list.deliver();
 				// Check internal page representation
 				assert.strictEqual(list._idPages.length, 1, "A: number of pages");
@@ -407,7 +407,7 @@ define([
 					assert.strictEqual(removeTabsAndReturns(list.children[48].textContent),
 						"Click to load 23 more items", "B");
 					// Add an item
-					list.store.splice(25, 0, {id: "C", label: "item C"});
+					list.source.splice(25, 0, {id: "C", label: "item C"});
 					list.deliver();
 					assert.strictEqual(list.children.length, 50, "C: number of list children");
 					assert.strictEqual(removeTabsAndReturns(list.children[0].textContent), "item 0", "C");
@@ -468,9 +468,9 @@ define([
 		"Helper: add item before first page creates loader": function (/*Deferred*/dfd) {
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 24; i++) {
-				list.store.push({id: i, label: "item " + i});
+				list.source.push({id: i, label: "item " + i});
 			}
 			list.pageLength = 23;
 			list.maxPages = 2;
@@ -480,7 +480,7 @@ define([
 			waitForCondition(function () {
 				return list.textContent.indexOf("item 22") >= 0;
 			}, TIMEOUT, INTERVAL).then(dfd.rejectOnError(function () {
-				list.store.splice(0, 0, {id: "A", label: "item A"});
+				list.source.splice(0, 0, {id: "A", label: "item A"});
 				list.deliver();
 				// Check internal page representation
 				assert.strictEqual(list._idPages.length, 1, "A: number of pages");
@@ -515,15 +515,15 @@ define([
 		"Helper: add item after last page creates loader": function (/*Deferred*/dfd) {
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 23; i++) {
-				list.store.push({id: i, label: "item " + i});
+				list.source.push({id: i, label: "item " + i});
 			}
 			list.pageLength = 23;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -538,7 +538,7 @@ define([
 					"0: last children is next page loader");
 				clickNextPageLoader(list).then(dfd.rejectOnError(function () {
 					// Add an item at the end
-					list.store.push({id: "A", label: "item A"});
+					list.source.push({id: "A", label: "item A"});
 					list.deliver();
 					// Check internal page representation
 					assert.strictEqual(list._idPages.length, 1, "A: number of pages");
@@ -570,15 +570,15 @@ define([
 		"Helper: add item to undisplayed page": function (/*Deferred*/dfd) {
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({id: i, label: "item " + i});
+				list.source.push({id: i, label: "item " + i});
 			}
 			list.pageLength = 23;
 			list.maxPages = 1;
 			document.body.appendChild(list);
 			list.attachedCallback();
-			list.store.splice(23, 0, {id: "A", label: "item A"});
+			list.source.splice(23, 0, {id: "A", label: "item A"});
 			list.deliver();
 			waitForCondition(function () {
 				return list.textContent.indexOf("item 22") >= 0;
@@ -598,7 +598,7 @@ define([
 					assert.strictEqual(removeTabsAndReturns(list.children[24].textContent),
 						"Click to load 23 more items",
 						"B: next page loader");
-					list.store.splice(22, 0, {id: "B", label: "item B"});
+					list.source.splice(22, 0, {id: "B", label: "item B"});
 					clickPreviousPageLoader(list).then(dfd.callback(function () {
 						list.deliver();
 						assert.strictEqual(list.children.length, 25, "C: list number of children");
@@ -631,12 +631,15 @@ define([
 			}
 		},
 		"itemAdded": function () {
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			list.pageLength = 100;
 			var resetList = function () {
 				list._idPages = [[1, 2, 3], [4, 5, 6]];
 				list._firstLoaded = 1;
 				list._lastLoaded = 6;
+			};
+			list.getIdentity = function (item) {
+				return item.id !== undefined ? item.id : this.data.indexOf(item);
 			};
 			resetList();
 			list.itemAdded(0, {id: "A"});
@@ -680,7 +683,7 @@ define([
 			assert.strictEqual(list._lastLoaded, 6, "H");
 		},
 		"itemRemoved": function () {
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			list.pageLength = 100;
 			var resetList = function () {
 				list._idPages = [[1, 2, 3], [4, 5, 6]];
@@ -732,15 +735,15 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 20;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -783,16 +786,16 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+				list.source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 			}
 			list.pageLength = 25;
 			list.maxPages = 0;
 			list.categoryAttr = "category";
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -842,15 +845,15 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 20;
 			list.maxPages = 2;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -910,16 +913,16 @@ define([
 				var dfd = this.async(3000);
 				var TIMEOUT = 2000;
 				var INTERVAL = 100;
-				list = new PageableList({store: new ObservableArray()});
+				list = new PageableList({source: new ObservableArray()});
 				for (var i = 0; i < 100; i++) {
-					list.store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+					list.source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 				}
 				list.categoryAttr = "category";
 				list.pageLength = 25;
 				list.maxPages = 2;
 				list.on("new-query-asked", function (evt) {
 					evt.setPromise(new Promise(function (resolve) {
-						resolve(list.store.slice(evt.start, evt.end));
+						resolve(list.source.slice(evt.start, evt.end));
 					}));
 				});
 				document.body.appendChild(list);
@@ -967,15 +970,15 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 100;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -998,16 +1001,16 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+				list.source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 			}
 			list.categoryAttr = "category";
 			list.pageLength = 100;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -1030,15 +1033,15 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 100;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -1061,16 +1064,16 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+				list.source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 			}
 			list.categoryAttr = "category";
 			list.pageLength = 100;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -1093,15 +1096,15 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 101;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -1119,16 +1122,16 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+				list.source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 			}
 			list.categoryAttr = "category";
 			list.pageLength = 101;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -1146,15 +1149,15 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 101;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -1172,16 +1175,16 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+				list.source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 			}
 			list.categoryAttr = "category";
 			list.pageLength = 101;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -1234,9 +1237,9 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+				list.source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 			}
 			list.categoryAttr = "category";
 			list.pageLength = 25;
@@ -1252,12 +1255,12 @@ define([
 				clickNextPageLoader(list).then(dfd.rejectOnError(function () {
 					list.deliver();
 					assertCategorizedList(list, 50, 0, false, true);
-					// Create a new store and assign it to the list
-					var store = new ObservableArray();
+					// Create a new source and assign it to the list
+					var source = new ObservableArray();
 					for (var i = 1000; i < 1100; i++) {
-						store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+						source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 					}
-					list.store = store;
+					list.source = source;
 					list.deliver();
 					waitForCondition(function () {
 						return list.textContent.indexOf("item 1000") >= 0;
@@ -1272,9 +1275,9 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 10;
 			list.maxPages = 2;
@@ -1308,9 +1311,9 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 10;
 			list.maxPages = 2;
@@ -1342,9 +1345,9 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 10;
 			list.maxPages = 1;
@@ -1369,9 +1372,9 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 10;
 			list.maxPages = 1;
@@ -1398,16 +1401,16 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 39; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.hideOnPageLoad = true;
 			list.pageLength = 20;
 			list.maxPages = 0;
 			list.on("new-query-asked", function (evt) {
 				evt.setPromise(new Promise(function (resolve) {
-					resolve(list.store.slice(evt.start, evt.end));
+					resolve(list.source.slice(evt.start, evt.end));
 				}));
 			});
 			document.body.appendChild(list);
@@ -1437,14 +1440,14 @@ define([
 				return;
 			}
 			var def = this.async(1000 + 3 * TIMEOUT);
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			list.categoryAttr = "category";
 			list.pageLength = 25;
 			list.maxPages = 2;
 			list.style.height = "200px";
 			list.autoPaging = true;
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
+				list.source.push({label: "item " + i, category: "Category " + Math.floor(i / 10)});
 			}
 			document.body.appendChild(list);
 			setTimeout(def.rejectOnError(function () {
@@ -1513,9 +1516,9 @@ define([
 			var dfd = this.async(3000);
 			var TIMEOUT = 2000;
 			var INTERVAL = 100;
-			list = new PageableList({store: new ObservableArray()});
+			list = new PageableList({source: new ObservableArray()});
 			for (var i = 0; i < 100; i++) {
-				list.store.push({label: "item " + i});
+				list.source.push({label: "item " + i});
 			}
 			list.pageLength = 10;
 			list.maxPages = 1;
