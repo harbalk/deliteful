@@ -310,15 +310,15 @@ define([
 					this._setBusy(true, true);
 
 					// trigger a reload of the list
-					this.notifyCurrentValue("store");
+					this.notifyCurrentValue("source");
 				}
 			}
 		},
 
 		destroy: function () {
 			// Remove reference to the list in the default store
-			if (this.store && this.store.list) {
-				this.store.list = null;
+			if (this.source && this.source.list) {
+				this.source.list = null;
 			}
 			this._hideLoadingPanel();
 		},

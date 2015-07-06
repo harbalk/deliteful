@@ -6,7 +6,7 @@ define([
 	"intern/dojo/node!leadfoot/keys",
 	"require"
 ], function (intern, registerSuite, pollUntil, assert, keys, require) {
-	
+
 	var loadFile = function (remote, fileName) {
 		return remote
 			.get(require.toUrl(fileName))

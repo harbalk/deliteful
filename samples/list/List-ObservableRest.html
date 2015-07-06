@@ -22,8 +22,9 @@
 			"delite/register",
 			'requirejs-dplugins/Promise!', // page level CSS
 			"deliteful/list/List",
-			"decor/ObservableArray"
-		], function (request, register, Promise, List, ObservableArray) {
+			"decor/ObservableArray",
+			"decor/Observable"
+		], function (request, register, Promise, List, ObservableArray, Observable) {
 
 			var list  = register.createElement("d-list");
 			list.id = "L";
@@ -33,11 +34,49 @@
 			});
 			initRequest.then(function (response) {
 				var arr = JSON.parse(response);
-				list.store = new ObservableArray();
+				list.source = new ObservableArray();
 				for (var i = 0; i < arr.length; i++) {
-					list.store.set(i, arr[i]);
+					list.source.set(i, arr[i]);
 				}
+				this._itemHandles = [];
+				for (var i = 0; i < list.source.length; i++) {
+					// affect the callback to the observe function if the item is observable
+					this._itemHandles[i] = Observable.observe(list.source[i], function (changeRecords) {
+						var objects = [];
+						for (var i = 0; i < changeRecords.length; i++) {
+							var object = changeRecords[i].object;
+							if (objects.indexOf(object) < 0) {
+								objects.push(object);
+								var evtUpdated = {
+									obj: object
+								};
+								list.emit("db-update", evtUpdated);
+							}
+						}
+					});
+				}
+				// affect the callback to the observe function if the array is observable
+				this._storeHandle = ObservableArray.observe(list.source, function (changeRecords) {
+					for (var i = 0; i < changeRecords.length; i++) {
+						if (changeRecords[i].type === "splice") {
+							var j;
+							for (j = 0; j < changeRecords[i].removed.length; j++) {
+								var evtRemoved = {
+									obj: changeRecords[i].removed[j]
+								};
+								list.emit("db-delete", evtRemoved);
+							}
+							for (j = 0; j < changeRecords[i].addedCount; j++) {
+								var evtAdded = {
+									obj: list.source[changeRecords[i].index + j]
+								};
+								list.emit("db-add", evtAdded);
+							}
+						}
+					}
+				});
 			});
+
 			list.on("db-add", function(evt) {
 				request("http://9.128.82.26:3000/book", {
 					method: 'POST',
@@ -67,17 +106,17 @@
 			document.body.style.display = "";
 
 			window.setTimeout(function() {
-				list.store.splice(0,1);
+				list.source.splice(0,1);
 			},1000);
 
 			window.setTimeout(function() {
-				list.store[0].title = "Pomme";
-				list.store[1].title = "Poire";
-				list.store[2].title = "Banane";
+				list.source[0].title = "Pomme";
+				list.source[1].title = "Poire";
+				list.source[2].title = "Banane";
 			},2000);
 
 			window.setTimeout(function() {
-				list.store.push({title: "Patate", id: "Patate"});
+				list.source.push({title: "Patate", id: "Patate"});
 			},4000);
 
 		});

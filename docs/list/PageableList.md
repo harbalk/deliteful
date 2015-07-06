@@ -30,7 +30,10 @@ See [`delite/Widget`](/delite/docs/master/Widget.md) for full details on how ins
 ### Declarative Instantiation
 
 ```html
-<d-store id="myStore">
+<!-- A pageable list of categorized items that uses the default item renderer, -->
+<!-- mapping the sales property of items to righttext, and using the -->
+<!-- region property as the item category -->
+<d-pageable-list height="100%" righttextAttr="sales" categoryAttr="region">
     <!-- Add the following items to the store -->
     { "label": "France", "sales": 500, "profit": 50, "region": "EU" },
     { "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
@@ -40,20 +43,15 @@ See [`delite/Widget`](/delite/docs/master/Widget.md) for full details on how ins
     { "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
     { "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
     { "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
-</d-store>
-<!-- A pageable list of categorized items that uses the default item renderer, -->
-<!-- mapping the sales property of items to righttext, and using the -->
-<!-- region property as the item category -->
-<d-pageable-list height="100%" righttextAttr="sales" categoryAttr="region" id="myStore">
 </d-list>
 ```
-### Programmatic Instantiation with a `dstore/Store` in store property
+### Programmatic Instantiation with a `dstore/Store` in source property
 
 ```js
 require(["dstore/Memory", "deliteful/list/PageableList", "requirejs-domready/domReady!"],
   function (Memory, PageableList) {
   // Create a memory store for the list and initialize it
-  var dataStore = new Memory({idProperty: "label", data:
+  var dataSource = new Memory({idProperty: "label", data:
     [
       { label: "France", sales: 500, profit: 50, region: "EU" },
       { label: "Germany", sales: 450, profit: 48, region: "EU" },
@@ -64,10 +62,10 @@ require(["dstore/Memory", "deliteful/list/PageableList", "requirejs-domready/dom
       { label: "China", sales: 500, profit: 40, region: "Asia" },
       { label: "Japan", sales: 900, profit: 100, region: "Asia" }
   ]});
-  // A pageable list of categorized items from dataStore, that uses the default item renderer,
+  // A pageable list of categorized items from dataSource, that uses the default item renderer,
   // mapping the sales property of items to righttext and using the region property
   // as the item category.
-  var list = new PageableList({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+  var list = new PageableList({source: dataSource, righttextAttr: "sales", categoryAttr: "region"});
   list.style.height = "100%";
   list.placeAt(document.body);
 });
@@ -77,13 +75,13 @@ require(["dstore/Memory", "deliteful/list/PageableList", "requirejs-domready/dom
 src="http://jsfiddle.net/ibmjs/099c6dkk/embedded/result,js">
 <a href="http://jsfiddle.net/ibmjs/099c6dkk/">checkout the sample on JSFiddle</a></iframe>
 
-### Programmatic Instantiation with an array in store property
+### Programmatic Instantiation with an array in source property
 
 ```js
 require(["deliteful/list/PageableList", "requirejs-domready/domReady!"],
   function (PageableList) {
   // Create a memory store for the list and initialize it
-  var dataStore =
+  var dataSource =
     [
       { label: "France", sales: 500, profit: 50, region: "EU" },
       { label: "Germany", sales: 450, profit: 48, region: "EU" },
@@ -94,10 +92,10 @@ require(["deliteful/list/PageableList", "requirejs-domready/domReady!"],
       { label: "China", sales: 500, profit: 40, region: "Asia" },
       { label: "Japan", sales: 900, profit: 100, region: "Asia" }
   ];
-  // A pageable list of categorized items from dataStore, that uses the default item renderer,
+  // A pageable list of categorized items from dataSource, that uses the default item renderer,
   // mapping the sales property of items to righttext and using the region property
   // as the item category.
-  var list = new PageableList({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+  var list = new PageableList({source: dataSource, righttextAttr: "sales", categoryAttr: "region"});
   list.style.height = "100%";
   list.placeAt(document.body);
 });
@@ -125,7 +123,7 @@ When started, a pageable list will load and display only one page of data, and w
 
 The `pageLength` property of a pageable list defines the number of items in a page of data. Note that this number is a maximum, and that a page may contain less items.
 
-If this property is set to 0 or less, the list will load and display all the items from the store (as a non pageable list does).
+If this property is set to 0 or less, the list will load and display all the items from the source (as a non pageable list does).
 
 Here is an example of setting a pageLength of 100 items:
 
@@ -155,11 +153,11 @@ Here is the same example using markup:
 	</script>
 </head>
 <body>
-	<d-pageable-list store="..." pageLength="100">
+	<d-pageable-list source="..." pageLength="100">
 	</d-pageable-list>
 </body>
 ```
-In this example, the list will load (up to) the first 100 items from the store, display them, and provide user controls to load another page of (up to) 100 items if there are more items in the store.
+In this example, the list will load (up to) the first 100 items from the source, display them, and provide user controls to load another page of (up to) 100 items if there are more items in the source.
 
 <a name="maxnbpages"></a>
 ### Defining the maximum number of pages to display at once
@@ -168,12 +166,12 @@ The property `maxPages` defines the maximum number of pages to display at the sa
 
 When a pageable list loads and displays a new page of data, it makes sure not to display more pages than the maximum number of pages allowed by unloading some other pages.
 
-Here is an example that illustrates the unloading mechanism, using a pageable list on a store of 1000 items, with a page length of 50 and a maximum number of 2 pages displayed at the same time:
+Here is an example that illustrates the unloading mechanism, using a pageable list on a source of 1000 items, with a page length of 50 and a maximum number of 2 pages displayed at the same time:
 
-1. Initially, the list loads and displays the 50 first items of the store (index 0 to 49), and creates a user control to load the following page;
-1. When the user control is activated, the following 50 items (index 50 to 99) are loaded from the store and appended to the list (the list now displays the 100 first items from the store);
+1. Initially, the list loads and displays the 50 first items of the source (index 0 to 49), and creates a user control to load the following page;
+1. When the user control is activated, the following 50 items (index 50 to 99) are loaded from the source and appended to the list (the list now displays the 100 first items from the source);
 1. When the user control is activated once again:
-    1. the following 50 items (index 100 to 149) are loaded from the store and appended to the list;
+    1. the following 50 items (index 100 to 149) are loaded from the source and appended to the list;
     1. the first page of items (index 0 to 49) is removed from the DOM, and a user control is created to load the previous page.
 
 If the `maxPages` property is set to 0 or less, there is no maximum number of pages (pages are never unloaded).
@@ -228,8 +226,8 @@ See also [`deliteful/list/List` user interactions](./List.md#interactions) for t
 
 The list provides up to two user controls to load and display more data:
 
-1. A user control to load the next page of data from the store. It is only present if there is more data to load from the store.
-1. A user control to load the previous page of data from the store. It is only present if there is previous data to load from the store.
+1. A user control to load the next page of data from the source. It is only present if there is more data to load from the source.
+1. A user control to load the previous page of data from the source. It is only present if there is previous data to load from the source.
 
 The user controls can be activated using one of the following interactions, as described in the next sections:
 
@@ -240,19 +238,19 @@ The user controls can be activated using one of the following interactions, as d
 
 The user controls for loading pages are clickable (or activable using the SPACE key when navigating the list using the keyboard).
 
-If there is a next page of data in the store, the user control is displayed at the end of the list:
+If there is a next page of data in the source, the user control is displayed at the end of the list:
 
 ![Next Page Loader Example](images/PageLoader.png)
 
 The message that is displayed by the control can be customized using the `loadNextMessage` of a pageable List (see the API documentation for more information).
 
-When the user control is activated, its appearance changes while the list is busy retrieving data from the store and displaying it:
+When the user control is activated, its appearance changes while the list is busy retrieving data from the source and displaying it:
 
 ![Next Page Loading Example](images/PageLoading.png)
 
 The message that is displayed when the list is busy can also be customized, using the `loadingMessage` property of a pageable list.
 
-When the new page of items is displayed, the first new item gains the focus and the user control is either deleted (if there is no more data in the store) or moved to the end of the list:
+When the new page of items is displayed, the first new item gains the focus and the user control is either deleted (if there is no more data in the source) or moved to the end of the list:
 
 ![Next Page Loaded Example](images/PageLoaded.png)
 
@@ -279,7 +277,7 @@ No specific Mixin is currently provided for this widget.
 
 See also [`deliteful/list/List` element events](./List.md#events) for the element events inherited from the `deliteful/list/List` widget.
 
-In the case of one uses an array as the store, an event "new-query-asked" is emitted when all the items contained in the list
+In the case of one uses an array as the source, an event "new-query-asked" is emitted when all the items contained in the list
 are displayed.
 Also one must define the following function :
 
@@ -287,13 +285,13 @@ Also one must define the following function :
 require(["deliteful/list/PageableList", "requirejs-domready/domReady!"],
   function (PageableList) {
   // Create a memory store for the list and initialize it
-  var dataStore = [...];
-  var list = new PageableList({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+  var dataSource = [...];
+  var list = new PageableList({source: dataSource, righttextAttr: "sales", categoryAttr: "region"});
   list.on("new-query-asked", function(evt) {
 		evt.setPromise(new Promise (function (resolve) {
 			...
 			//return the elements asked by the query in the resolve promise (can be [])
-			resolve(list.store.slice(evt.start, evt.end));
+			resolve(list.source.slice(evt.start, evt.end));
 		}))
 	});
   list.style.height = "100%";

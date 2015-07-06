@@ -29,18 +29,18 @@
 			var TrackedRestStore = declare([Rest, SimpleQuery, Trackable]);
 			var list  = register.createElement("d-pageable-list");
 			list.id = "L"
-			list.store = new TrackedRestStore({target:"http://9.128.82.26:3000/book"});
+			list.source = new TrackedRestStore({target:"http://9.128.82.26:3000/book"});
 			list.pageLength = 5;
 			list.maxPages = 2;
-			list.store.rangeStartParam = "start";
-			list.store.rangeCountParam = "length";
+			list.source.rangeStartParam = "start";
+			list.source.rangeCountParam = "length";
 			list.setAttribute("aria-label", "Sample list that uses attributes for store item to renderer item mapping");
 			list.labelAttr = "title";
 			list.righttextFunc = function (item) {
 				return item.title.split("order ")[1];
 			};
 			for (var i = 0; i < 16; i++) {
-				list.store.add({title: "Programmatic item of order " + i});
+				list.source.add({title: "Programmatic item of order " + i});
 			}
 			list.placeAt(document.body);
 			document.body.style.display = "";

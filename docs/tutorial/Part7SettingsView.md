@@ -113,9 +113,9 @@ tagsInput.value = settings.tags;
 
 tagModeSwitch.checked = settings.tagMode === "all" ? true : false;
 
-languageSelect.store = new Memory();
+languageSelect.source = new Memory();
 languages.forEach(function (l) {
-	languageSelect.store.add(l);
+	languageSelect.source.add(l);
 	languageSelect.setSelected(l, l.value === settings.language);
 });
 

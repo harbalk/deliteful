@@ -42,18 +42,17 @@ define([
 	 *   function () {
 	 *   });
 	 * HTML:
-	 * <d-store id="myStore">
-	 *    {text: "Option 1", value: "1"}
-	 *    ...
-	 * </d-store>
-	 * <d-select id="select" store="myStore"></d-select>
+	 * <d-select id="select">
+     *    {text: "Option 1", value: "1"}
+     *    ...
+     * </d-select>
 	 * @example <caption>Using programmatically created store</caption>
 	 * JS:
 	 * require(["dstore/Memory", "dstore/Trackable",
 	 *         "deliteful/Select", "requirejs-domready/domReady!"],
 	 *   function (Memory, Trackable) {
 	 *     var store = new (Memory.createSubclass(Trackable))({});
-	 *     select1.store = store;
+	 *     select1.source = store;
 	 *     store.add({text: "Option 1", value: "1"});
 	 *     ...
 	 *   });
@@ -65,7 +64,7 @@ define([
 	 * @augments module:delite/StoreMap
 	 * @augments module:delite/Selection
 	 */
-	return register("d-select", [HTMLElement, FormWidget, StoreMap, Selection],
+	return register("d-select", [HTMLElement, FormWidget, Selection, StoreMap],
 		/** @lends module:deliteful/Select# */ {
 		
 		// TODO: improve doc.
@@ -150,7 +149,7 @@ define([
 					});
 				}.bind(this), this.valueNode.form);
 			}
-			
+
 			// To provide graphic feedback for focus, react to focus/blur events
 			// on the underlying native select. The CSS class is used instead
 			// of the focus pseudo-class because the browsers give the focus
@@ -161,7 +160,7 @@ define([
 			this.on("blur", function (evt) {
 				$(this).toggleClass("d-select-focus", evt.type === "focus");
 			}.bind(this), this.valueNode);
-			
+
 			// Keep delite/Selection's selectedItem/selectedItems in sync after
 			// interactive selection of options.
 			this.on("change", function (event) {
@@ -201,10 +200,10 @@ define([
 						this.selectFromEvent(event, selectedOption.__dataItem, selectedOption, true);
 					}
 				}
-				
+
 				// Update widget's value after interactive selection
 				this._set("value", this.valueNode.value);
-				
+
 				this._duringInteractiveSelection = false;
 			}.bind(this), this.valueNode);
 			
@@ -239,7 +238,9 @@ define([
 						option.__dataItem = renderItem.__item; // __item is set by StoreMap.itemToRenderItem()
 						// to allow retrieving the option element from widget's selectedItems
 						// (which are data items, not render items).
-						option.__dataItem.__visualItem = option;
+                        if (!option.__dataItem.__visualItem) {
+                            option.__dataItem.__visualItem = option;
+                        }
 						
 						// According to http://www.w3.org/TR/html5/forms.html#the-option-element, we 
 						// could use equivalently the label or the text IDL attribute of the option element.
@@ -290,10 +291,12 @@ define([
 			}
 		},
 		
-		getIdentity: function (dataItem) {
-			// Override of delite/Selection's method
-			return this.store.getIdentity(dataItem);
-		},
+		getIdentity: dcl.superCall(function (sup) {
+            return function (dataItem) {
+                // Override of delite/Selection's method
+                return sup.call(this, dataItem);
+            }
+        }),
 		
 		updateRenderers: function () {
 			// Override of delite/Selection's method.
