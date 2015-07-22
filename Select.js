@@ -293,9 +293,8 @@ define([
 		
 		getIdentity: dcl.superCall(function (sup) {
             return function (dataItem) {
-                // Override of delite/Selection's method
                 return sup.call(this, dataItem);
-            }
+            };
         }),
 		
 		updateRenderers: function () {

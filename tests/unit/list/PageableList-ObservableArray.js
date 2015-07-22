@@ -6,10 +6,10 @@ define([
 	"decor/ObservableArray",
 	"delite/register",
 	"deliteful/list/PageableList",
-	"./resources/ListBaseTestsArrayObs",
+	"./resources/ListBaseTestsObservableArray",
 	"requirejs-dplugins/Promise!"
 ], function (has, registerSuite, assert, Deferred, ObservableArray, register,
-			 PageableList, ListBaseTestsArrayObs, Promise) {
+			 PageableList, ListBaseTestsObservableArray, Promise) {
 
 	// PageableList is currently not supported on IE10
 	// see https://github.com/ibm-js/deliteful/issues/280
@@ -23,7 +23,8 @@ define([
 	/////////////////////////////////
 
 	registerSuite(
-		ListBaseTestsArrayObs.buildSuite("list/PageableList-ArrayObs-noPagination-baseListTests", PageableList));
+		ListBaseTestsObservableArray.buildSuite("list/PageableList-ObservableArray-noPagination-baseListTests",
+            PageableList));
 
 	/////////////////////////////////
 	// PageableList specific tests
@@ -624,7 +625,7 @@ define([
 	};
 
 	registerSuite({
-		name: "list/PageableList-ArrayObs",
+		name: "list/PageableList-ObservableArray",
 		beforeEach: function () {
 			if (list) {
 				list.destroy();

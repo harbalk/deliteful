@@ -1,11 +1,11 @@
 //Listing of all the List unit tests
 define([
 	"./List",
-	"./List-ArrayObs",
+	"./List-ObservableArray",
 	"./Renderer",
 	"./Selection",
 	"./AriaListbox",
 	"./Categories",
 	"./PageableList",
-	"./PageableList-ArrayObs"
+	"./PageableList-ObservableArray"
 ]);
