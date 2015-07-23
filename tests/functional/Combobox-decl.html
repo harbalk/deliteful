@@ -52,19 +52,21 @@
 
 			// Store information for use in the automatic functional test
 			var storeTestingInfo = function (combo) {
-				combo._inputEventCounter = 0;
-				combo._changeEventCounter = 0;
-				combo.on("input", function () {
-					combo._inputEventCounter++;
-					combo._widgetValueAtLatestInputEvent = combo.value;
-					combo._valueNodeValueAtLatestInputEvent = combo.valueNode.value;
-				});
-				combo.on("change", function () {
-					combo._changeEventCounter++;
-					combo._widgetValueAtLatestChangeEvent = combo.value;
-					combo._valueNodeValueAtLatestChangeEvent = combo.valueNode.value;
-				});
-
+				if (!combo.init) {
+					combo._inputEventCounter = 0;
+					combo._changeEventCounter = 0;
+					combo.on("input", function () {
+						combo._inputEventCounter++;
+						combo._widgetValueAtLatestInputEvent = combo.value;
+						combo._valueNodeValueAtLatestInputEvent = combo.valueNode.value;
+					});
+					combo.on("change", function () {
+						combo._changeEventCounter++;
+						combo._widgetValueAtLatestChangeEvent = combo.value;
+						combo._valueNodeValueAtLatestChangeEvent = combo.valueNode.value;
+					});
+					combo.init = true;
+                }
 				// Store ids for item cells such that the automatic functional test
 				// can retrieve them.
 				var itemRenderers = combo.list.getItemRenderers();
@@ -78,17 +80,22 @@
 				}
 			};
 
-            combo = document.getElementById("combo3");
-            var res = combo.list.on("query-success", function () {
-                // single selection mode, autoFilter=true
-                storeTestingInfo(document.getElementById("combo1"));
-                // single selection mode, autoFilter=true
-                storeTestingInfo(document.getElementById("combo2"));
-                // multiple selection mode
-                storeTestingInfo(document.getElementById("combo3"));
-                res.remove(res);
-                ready = true;
-            });
+			combo = document.getElementById("combo1");
+			combo.list.on("query-success", function () {
+				// single selection mode, autoFilter=true
+				storeTestingInfo(document.getElementById("combo1"));
+			});
+			combo = document.getElementById("combo2");
+			combo.list.on("query-success", function () {
+				// single selection mode, autoFilter=true
+				storeTestingInfo(document.getElementById("combo2"));
+			});
+			combo = document.getElementById("combo3");
+			combo.list.on("query-success", function () {
+				// multiple selection mode
+				storeTestingInfo(document.getElementById("combo3"));
+				ready = true;
+			});
 
 			// Used by the automatic functional test, for comboboxes in both
 			// single and multiple selection modes.

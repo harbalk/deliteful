@@ -238,9 +238,9 @@ define([
 						option.__dataItem = renderItem.__item; // __item is set by StoreMap.itemToRenderItem()
 						// to allow retrieving the option element from widget's selectedItems
 						// (which are data items, not render items).
-                        if (!option.__dataItem.__visualItem) {
-                            option.__dataItem.__visualItem = option;
-                        }
+						if (!option.__dataItem.__visualItem) {
+							option.__dataItem.__visualItem = option;
+						}
 						
 						// According to http://www.w3.org/TR/html5/forms.html#the-option-element, we 
 						// could use equivalently the label or the text IDL attribute of the option element.
@@ -292,10 +292,10 @@ define([
 		},
 		
 		getIdentity: dcl.superCall(function (sup) {
-            return function (dataItem) {
-                return sup.call(this, dataItem);
-            };
-        }),
+			return function (dataItem) {
+				return sup.call(this, dataItem);
+			};
+		}),
 		
 		updateRenderers: function () {
 			// Override of delite/Selection's method.
