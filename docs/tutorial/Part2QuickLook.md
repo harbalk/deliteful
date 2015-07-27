@@ -93,7 +93,6 @@ containing a header (a nested `d-linear-layout`), but below the header we now ha
 			{"label": "First View", "id": "first" },
 			{"label": "Second View", "id": "second" },
 			{"label": "Third View", "id": "third" }
-			<!--{"label": "Fourth View", "id": "fourth" }-->
 		</d-list>
 	</d-linear-layout>
 </d-side-pane>

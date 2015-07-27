@@ -47,10 +47,10 @@ require(["deliteful/Combobox", "requirejs-domready/domReady!"],
 ```html
 <html>
   <d-combobox>
-    <d-list>
-    { "label": "France", ... },
-      ...
-    </d-list>
+	<d-list>
+	{ "label": "France", ... },
+	  ...
+	</d-list>
   </d-combobox>
 </html>
 ```
@@ -65,19 +65,19 @@ src="http://jsfiddle.net/ibmjs/d1sj0fkp/embedded/result,js,html">
 
 ```js
 require(["dstore/Memory", "dstore/Trackable",
-         "deliteful/Combobox", "deliteful/list/List",
-         "requirejs-domready/domReady!"],
+		 "deliteful/Combobox", "deliteful/list/List",
+		 "requirejs-domready/domReady!"],
   function (Memory, Trackable, Combobox, List) {
-    // Create the store
-    var dataSource = new (Memory.createSubclass(Trackable))({});
-    // Add options
-    dataSource.add(...);
-    ...
-    // Create the List
-    var list = new List({source: dataSource, ...});
-    // Create the Combobox
-    var Combobox = new Combobox({list: list, selectionMode: "multiple"});
-    Combobox.placeAt(document.body);
+	// Create the store
+	var dataSource = new (Memory.createSubclass(Trackable))({});
+	// Add options
+	dataSource.add(...);
+	...
+	// Create the List
+	var list = new List({source: dataSource, ...});
+	// Create the Combobox
+	var Combobox = new Combobox({list: list, selectionMode: "multiple"});
+	Combobox.placeAt(document.body);
 });
 ```
 
@@ -85,19 +85,19 @@ Or with an array in source property of the list :
 
 ```js
 require(["decor/ObservableArray", "decor/Observable",
-         "deliteful/Combobox", "deliteful/list/List",
-         "requirejs-domready/domReady!"],
+		 "deliteful/Combobox", "deliteful/list/List",
+		 "requirejs-domready/domReady!"],
   function (ObservableArray, Observable, Combobox, List) {
-    // Create the store
-    var dataSource = new ObservableArray();
-    // Add options
-    dataSource.push(new Observable(...));
-    ...
-    // Create the List
-    var list = new List({source: dataSource, ...});
-    // Create the Combobox
-    var Combobox = new Combobox({list: list, selectionMode: "multiple"});
-    Combobox.placeAt(document.body);
+	// Create the store
+	var dataSource = new ObservableArray();
+	// Add options
+	dataSource.push(new Observable(...));
+	...
+	// Create the List
+	var list = new List({source: dataSource, ...});
+	// Create the Combobox
+	var Combobox = new Combobox({list: list, selectionMode: "multiple"});
+	Combobox.placeAt(document.body);
 });
 ```
 
@@ -110,10 +110,10 @@ Note that the `list` property is set by default to a newly created instance of
 `deliteful/list/List`. Hence, applications can write:
 
 ```js
-    var combobox = new Combobox();
-    // Create the store
-    combobox.list.source = ...;
-    ...
+	var combobox = new Combobox();
+	// Create the store
+	combobox.list.source = ...;
+	...
 ```
 
 <a name="using"></a>
@@ -209,13 +209,13 @@ set for `value` on the `List` instance, for example:
 		{ label: "Germany", value: "DE" },
 		...
 	]});
-    // Create the List and set valueAttr to specify the name of the field
-    // which stores the value of the item (valueFunc can also be used
-    // for dynamically computed values)
-    var list = new List({source: dataSourceWithValue, valueAttr: "value", ...});
-    // Create the Combobox
-    var combobox = new Combobox({list: list, ...});
-    combobox.placeAt(document.body);
+	// Create the List and set valueAttr to specify the name of the field
+	// which stores the value of the item (valueFunc can also be used
+	// for dynamically computed values)
+	var list = new List({source: dataSourceWithValue, valueAttr: "value", ...});
+	// Create the Combobox
+	var combobox = new Combobox({list: list, ...});
+	combobox.placeAt(document.body);
 ```
 
 or in markup:
@@ -223,10 +223,10 @@ or in markup:
 ```html
 <html>
   <d-combobox>
-    <d-list valueAttr="value">
-    { "label": "France", "value": "FR" },
-      ...
-    </d-list>
+	<d-list valueAttr="value">
+	{ "label": "France", "value": "FR" },
+	  ...
+	</d-list>
   </d-combobox>
 </html>
 ```

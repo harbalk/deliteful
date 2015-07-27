@@ -34,15 +34,15 @@ See [`delite/Widget`](/delite/docs/master/Widget.md) for full details on how ins
 <!-- mapping the sales property of items to righttext, and using the -->
 <!-- region property as the item category -->
 <d-pageable-list height="100%" righttextAttr="sales" categoryAttr="region">
-    <!-- Add the following items to the store -->
-    { "label": "France", "sales": 500, "profit": 50, "region": "EU" },
-    { "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
-    { "label": "UK", "sales": 700, "profit": 60, "region": "EU" },
-    { "label": "USA", "sales": 2000, "profit": 250, "region": "America" },
-    { "label": "Canada", "sales": 600, "profit": 30, "region": "America" },
-    { "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
-    { "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
-    { "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
+	<!-- Add the following items to the store -->
+	{ "label": "France", "sales": 500, "profit": 50, "region": "EU" },
+	{ "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
+	{ "label": "UK", "sales": 700, "profit": 60, "region": "EU" },
+	{ "label": "USA", "sales": 2000, "profit": 250, "region": "America" },
+	{ "label": "Canada", "sales": 600, "profit": 30, "region": "America" },
+	{ "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
+	{ "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
+	{ "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
 </d-list>
 ```
 ### Programmatic Instantiation with a `dstore/Store` in source property
@@ -52,15 +52,15 @@ require(["dstore/Memory", "deliteful/list/PageableList", "requirejs-domready/dom
   function (Memory, PageableList) {
   // Create a memory store for the list and initialize it
   var dataSource = new Memory({idProperty: "label", data:
-    [
-      { label: "France", sales: 500, profit: 50, region: "EU" },
-      { label: "Germany", sales: 450, profit: 48, region: "EU" },
-      { label: "UK", sales: 700, profit: 60, region: "EU" },
-      { label: "USA", sales: 2000, profit: 250, region: "America" },
-      { label: "Canada", sales: 600, profit: 30, region: "America" },
-      { label: "Brazil", sales: 450, profit: 30, region: "America" },
-      { label: "China", sales: 500, profit: 40, region: "Asia" },
-      { label: "Japan", sales: 900, profit: 100, region: "Asia" }
+	[
+	  { label: "France", sales: 500, profit: 50, region: "EU" },
+	  { label: "Germany", sales: 450, profit: 48, region: "EU" },
+	  { label: "UK", sales: 700, profit: 60, region: "EU" },
+	  { label: "USA", sales: 2000, profit: 250, region: "America" },
+	  { label: "Canada", sales: 600, profit: 30, region: "America" },
+	  { label: "Brazil", sales: 450, profit: 30, region: "America" },
+	  { label: "China", sales: 500, profit: 40, region: "Asia" },
+	  { label: "Japan", sales: 900, profit: 100, region: "Asia" }
   ]});
   // A pageable list of categorized items from dataSource, that uses the default item renderer,
   // mapping the sales property of items to righttext and using the region property
@@ -82,15 +82,15 @@ require(["deliteful/list/PageableList", "requirejs-domready/domReady!"],
   function (PageableList) {
   // Create a memory store for the list and initialize it
   var dataSource =
-    [
-      { label: "France", sales: 500, profit: 50, region: "EU" },
-      { label: "Germany", sales: 450, profit: 48, region: "EU" },
-      { label: "UK", sales: 700, profit: 60, region: "EU" },
-      { label: "USA", sales: 2000, profit: 250, region: "America" },
-      { label: "Canada", sales: 600, profit: 30, region: "America" },
-      { label: "Brazil", sales: 450, profit: 30, region: "America" },
-      { label: "China", sales: 500, profit: 40, region: "Asia" },
-      { label: "Japan", sales: 900, profit: 100, region: "Asia" }
+	[
+	  { label: "France", sales: 500, profit: 50, region: "EU" },
+	  { label: "Germany", sales: 450, profit: 48, region: "EU" },
+	  { label: "UK", sales: 700, profit: 60, region: "EU" },
+	  { label: "USA", sales: 2000, profit: 250, region: "America" },
+	  { label: "Canada", sales: 600, profit: 30, region: "America" },
+	  { label: "Brazil", sales: 450, profit: 30, region: "America" },
+	  { label: "China", sales: 500, profit: 40, region: "Asia" },
+	  { label: "Japan", sales: 900, profit: 100, region: "Asia" }
   ];
   // A pageable list of categorized items from dataSource, that uses the default item renderer,
   // mapping the sales property of items to righttext and using the region property
@@ -171,8 +171,8 @@ Here is an example that illustrates the unloading mechanism, using a pageable li
 1. Initially, the list loads and displays the 50 first items of the source (index 0 to 49), and creates a user control to load the following page;
 1. When the user control is activated, the following 50 items (index 50 to 99) are loaded from the source and appended to the list (the list now displays the 100 first items from the source);
 1. When the user control is activated once again:
-    1. the following 50 items (index 100 to 149) are loaded from the source and appended to the list;
-    1. the first page of items (index 0 to 49) is removed from the DOM, and a user control is created to load the previous page.
+	1. the following 50 items (index 100 to 149) are loaded from the source and appended to the list;
+	1. the first page of items (index 0 to 49) is removed from the DOM, and a user control is created to load the previous page.
 
 If the `maxPages` property is set to 0 or less, there is no maximum number of pages (pages are never unloaded).
 

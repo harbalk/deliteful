@@ -27,7 +27,7 @@
 		], function (register, Memory, Trackable, Select) {
 			register.deliver();
 
-            var Store = Memory.createSubclass([Trackable], {});
+			var Store = Memory.createSubclass([Trackable], {});
 
 			var nOptions = 40;
 	
@@ -117,7 +117,7 @@
 			};
 				
 			/* attempt to workaround IE's behavior which is to close 
-	 		the dropdown as soon as an option is added/removed - but this doesn't do the trick */
+			the dropdown as soon as an option is added/removed - but this doesn't do the trick */
 			/* var openDropdown = function (node) {
 				// var event = document.createEvent('MouseEvents');
 				// event.initMouseEvent('mousedown', true, true, window);

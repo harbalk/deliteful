@@ -72,15 +72,15 @@ define([
 	 * HTML:
 	 * <d-combobox id="combobox1">
 	 *   <d-list>
-     *   { "label": "France", "sales": 500, "profit": 50, "region": "EU" },
-     *   { "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
-     *   { "label": "UK", "sales": 700, "profit": 60, "region": "EU" },
-     *   { "label": "USA", "sales": 2000, "profit": 250, "region": "America" },
-     *   { "label": "Canada", "sales": 600, "profit": 30, "region": "America" },
-     *   { "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
-     *   { "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
-     *   { "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
-     *   </d-list>
+	 *   { "label": "France", "sales": 500, "profit": 50, "region": "EU" },
+	 *   { "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
+	 *   { "label": "UK", "sales": 700, "profit": 60, "region": "EU" },
+	 *   { "label": "USA", "sales": 2000, "profit": 250, "region": "America" },
+	 *   { "label": "Canada", "sales": 600, "profit": 30, "region": "America" },
+	 *   { "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
+	 *   { "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
+	 *   { "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
+	 *   </d-list>
 	 * </d-combobox>
 	 * 
 	 * @example <caption>Programmatic</caption>
@@ -482,7 +482,7 @@ define([
 					// List not ready, wait.
 					var waitListener = this.list.on("query-success", function () {
 						initValueSingleMode();
-                        waitListener.remove(waitListener);
+						waitListener.remove(waitListener);
 					});
 				}
 			} else { // selectionMode === "multiple"
@@ -756,7 +756,7 @@ define([
 						}
 					}
 				}
-				
+
 				sup.apply(this, arguments);
 			};
 		}),

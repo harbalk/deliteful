@@ -40,8 +40,8 @@ require(["deliteful/Select", "requirejs-domready/domReady!"],
 ```html
 <html>
   <d-select selectionMode="multiple">
-    {"text": "Option 1", "value": "1"},
-    ...
+	{"text": "Option 1", "value": "1"},
+	...
   </d-select>
 </html>
 ```
@@ -55,16 +55,16 @@ src="http://jsfiddle.net/ibmjs/nqM5G/embedded/result,js,html">
 
 ```js
 require(["dstore/Memory", "dstore/Trackable",
-         "deliteful/Select", "requirejs-domready/domReady!"],
+		 "deliteful/Select", "requirejs-domready/domReady!"],
   function (Memory, Trackable) {
-    var select = new Select({selectionMode: "multiple"});
-    // Create the store
-    var source = new (Memory.createSubclass(Trackable))({});
-    select.source = source;
-    // add options to the Select widget
-    source.add({text: "Option 1", value: "1"});
-    ...
-    select.placeAt(document.body);
+	var select = new Select({selectionMode: "multiple"});
+	// Create the store
+	var source = new (Memory.createSubclass(Trackable))({});
+	select.source = source;
+	// add options to the Select widget
+	source.add({text: "Option 1", value: "1"});
+	...
+	select.placeAt(document.body);
 });
 ```
 
@@ -72,15 +72,15 @@ Or with an array in source property :
 
 ```js
 require(["decor/ObservableArray", "decor/Observable",
-         "deliteful/Select", "requirejs-domready/domReady!"],
+		 "deliteful/Select", "requirejs-domready/domReady!"],
   function (ObservableArray, Observable) {
-    // Create the store
-    var source = new ObservableArray();
-    select.source = source;
-    // add options to the Select widget
-    source.push(new Observable({text: "Option 1", value: "1"}));
-    ...
-    select.placeAt(document.body);
+	// Create the store
+	var source = new ObservableArray();
+	select.source = source;
+	// add options to the Select widget
+	source.push(new Observable({text: "Option 1", value: "1"}));
+	...
+	select.placeAt(document.body);
 });
 ```
 

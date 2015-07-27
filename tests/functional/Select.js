@@ -1,7 +1,7 @@
 define(["intern",
-    "intern!object",
-    "intern/dojo/node!leadfoot/helpers/pollUntil",
-    "intern/dojo/node!leadfoot/keys",
+	"intern!object",
+	"intern/dojo/node!leadfoot/helpers/pollUntil",
+	"intern/dojo/node!leadfoot/keys",
 	"intern/chai!assert",
 	"require"
 	], function (intern, registerSuite, pollUntil, keys, assert, require) {

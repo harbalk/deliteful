@@ -1,5 +1,5 @@
 define([
-    "intern",
+	"intern",
 	"intern!object",
 	"intern/dojo/node!leadfoot/helpers/pollUntil",
 	"intern/chai!assert",

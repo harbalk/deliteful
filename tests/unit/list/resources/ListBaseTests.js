@@ -167,7 +167,7 @@ define([
 					assert.strictEqual(renderer.firstChild.children[1].innerHTML, "item a");
 					// update
 					list.source.put({label: "item a", iconclass: "my-other-icon"},
-                        {id: list.source.data[0].id});
+						{id: list.source.data[0].id});
 					list.deliver();
 					renderer = list.children[0];
 					assert.strictEqual(renderer.item.label, "item a");

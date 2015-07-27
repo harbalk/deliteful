@@ -10,7 +10,7 @@ define([
 ], function (dcl, registerSuite, assert, register, $,
 	Memory, Trackable, Select) {
 
-    var Store = Memory.createSubclass([Trackable], {});
+	var Store = Memory.createSubclass([Trackable], {});
 
 	var container, MySelect;
 	/*jshint multistr: true */

@@ -113,10 +113,11 @@ tagsInput.value = settings.tags;
 
 tagModeSwitch.checked = settings.tagMode === "all" ? true : false;
 
-languageSelect.source = new Memory();
-languages.forEach(function (l) {
-	languageSelect.source.add(l);
-	languageSelect.setSelected(l, l.value === settings.language);
+languageSelect.source = new Memory({data: languages});
+languageSelect.on("query-succes", function () {
+	languages.forEach(function (l) {
+		languageSelect.setSelected(l, l.value === settings.language);
+	});
 });
 
 // callbacks called when a settings input field is modified

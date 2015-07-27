@@ -104,21 +104,6 @@
 
 			list.placeAt(document.body);
 			document.body.style.display = "";
-
-			window.setTimeout(function() {
-				list.source.splice(0,1);
-			},1000);
-
-			window.setTimeout(function() {
-				list.source[0].title = "Pomme";
-				list.source[1].title = "Poire";
-				list.source[2].title = "Banane";
-			},2000);
-
-			window.setTimeout(function() {
-				list.source.push({title: "Patate", id: "Patate"});
-			},4000);
-
 		});
 	</script>
 </head>

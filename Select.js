@@ -43,9 +43,9 @@ define([
 	 *   });
 	 * HTML:
 	 * <d-select id="select">
-     *    {text: "Option 1", value: "1"}
-     *    ...
-     * </d-select>
+	 *    {text: "Option 1", value: "1"}
+	 *    ...
+	 * </d-select>
 	 * @example <caption>Using programmatically created store</caption>
 	 * JS:
 	 * require(["dstore/Memory", "dstore/Trackable",

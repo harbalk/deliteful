@@ -24,7 +24,7 @@ define([
 
 	registerSuite(
 		ListBaseTestsObservableArray.buildSuite("list/PageableList-ObservableArray-noPagination-baseListTests",
-            PageableList));
+			PageableList));
 
 	/////////////////////////////////
 	// PageableList specific tests

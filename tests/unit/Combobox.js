@@ -27,11 +27,11 @@ define([
 		{ \"label\": \"Option 7\", \"sales\": 900, \"profit\": 100, \"region\": \"Asia\" }, \
 		{ \"label\": \"Option 8\", \"sales\": 500, \"profit\": 40, \"region\": \"EU\" }, \
 		{ \"label\": \"Option 9\", \"sales\": 900, \"profit\": 100, \"region\": \"EU\" } \
-        </d-list> \
+		</d-list> \
 		</d-combobox> \
 		<my-combobox id=\"mycombo1\"> \
 		<d-list righttextAttr=\"sales\"> \
-        { \"label\": \"Option 0\", \"sales\": 500, \"profit\": 50, \"region\": \"EU\" }, \
+		{ \"label\": \"Option 0\", \"sales\": 500, \"profit\": 50, \"region\": \"EU\" }, \
 		{ \"label\": \"Option 1\", \"sales\": 450, \"profit\": 48, \"region\": \"EU\" }, \
 		{ \"label\": \"Option 2\", \"sales\": 700, \"profit\": 60, \"region\": \"EU\" }, \
 		{ \"label\": \"Option 3\", \"sales\": 2000, \"profit\": 250, \"region\": \"America\" }, \
@@ -44,10 +44,10 @@ define([
 		</d-list> \
 		</my-combobox>";
 
-    // Second variant to test attribute mapping for label
+	// Second variant to test attribute mapping for label
 
-    /*jshint multistr: true */
-    var htmlMappedAttr = " <d-combobox id=\"combo1\"> \
+	/*jshint multistr: true */
+	var htmlMappedAttr = " <d-combobox id=\"combo1\"> \
 		<d-list labelAttr=\"name\" righttextAttr=\"sales\"> \
 		{ \"name\": \"Option 0\", \"sales\": 500, \"profit\": 50, \"region\": \"EU\" }, \
 		{ \"name\": \"Option 1\", \"sales\": 450, \"profit\": 48, \"region\": \"EU\" }, \
@@ -59,7 +59,7 @@ define([
 		{ \"name\": \"Option 7\", \"sales\": 900, \"profit\": 100, \"region\": \"Asia\" }, \
 		{ \"name\": \"Option 8\", \"sales\": 500, \"profit\": 40, \"region\": \"EU\" }, \
 		{ \"name\": \"Option 9\", \"sales\": 900, \"profit\": 100, \"region\": \"EU\" } \
-        </d-list> \
+		</d-list> \
 		</d-combobox> \
 		<my-combobox id=\"mycombo1\"> \
 		<d-list labelAttr=\"name\" righttextAttr=\"sales\"> \
@@ -73,7 +73,7 @@ define([
 		{ \"name\": \"Option 7\", \"sales\": 900, \"profit\": 100, \"region\": \"Asia\" }, \
 		{ \"name\": \"Option 8\", \"sales\": 500, \"profit\": 40, \"region\": \"EU\" }, \
 		{ \"name\": \"Option 9\", \"sales\": 900, \"profit\": 100, \"region\": \"EU\" } \
-        </d-list> \
+		</d-list> \
 		</my-combobox>";
 
 	// For testing the ability to deal with item value different than item label
@@ -300,35 +300,35 @@ define([
 			container.parentNode.removeChild(container);
 		},
 		"Store.add/remove/put (custom element source)" : function () {
-            var d = this.async(1500);
+			var d = this.async(1500);
 			var combo = document.getElementById("combo1");
-            combo.list.on("query-success", d.rejectOnError(function () {
-                checkCombobox(combo, this);
-            }.bind(this)));
+			combo.list.on("query-success", d.rejectOnError(function () {
+				checkCombobox(combo, this);
+			}.bind(this)));
 
 			var combo1 = document.getElementById("mycombo1");
-            combo1.list.on("query-success", d.callback(function () {
-                checkCombobox(combo1, this);
-            }.bind(this)));
-            return d;
+			combo1.list.on("query-success", d.callback(function () {
+				checkCombobox(combo1, this);
+			}.bind(this)));
+			return d;
 		},
 		"Attribute mapping for label" : function () {
-            var d = this.async(1500);
+			var d = this.async(1500);
 			// Check the attribute mapping for label
 
 			container.innerHTML = htmlMappedAttr;
 			register.deliver();
 
 			var combo = document.getElementById("combo1");
-            combo.list.on("query-success",  d.rejectOnError(function () {
-                checkCombobox(combo, this);
-            }.bind(this)));
+			combo.list.on("query-success",  d.rejectOnError(function () {
+				checkCombobox(combo, this);
+			}.bind(this)));
 
 			var combo1 = document.getElementById("mycombo1");
-            combo1.list.on("query-success", d.callback(function () {
-                return checkCombobox(combo1, this);
-            }.bind(this)));
-            return d;
+			combo1.list.on("query-success", d.callback(function () {
+				return checkCombobox(combo1, this);
+			}.bind(this)));
+			return d;
 		}
 
 	};

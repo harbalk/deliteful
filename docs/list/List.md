@@ -146,10 +146,10 @@ The source can be instanciate with 3 different ways.
 
 ```html
 <d-list>
-    {"label": "First item", "iconclass": "my-icon-class-a"},
-    {"label": "Second item", "iconclass": "my-icon-class-b"},
-    ...,
-    {"label": "Last item", "iconclass": "my-icon-class-z"}
+	{"label": "First item", "iconclass": "my-icon-class-a"},
+	{"label": "Second item", "iconclass": "my-icon-class-b"},
+	...,
+	{"label": "Last item", "iconclass": "my-icon-class-z"}
 </d-list>
 ```
 
@@ -157,13 +157,13 @@ The source can be instanciate with 3 different ways.
 
 ```js
 require(["dstore/Memory", "dstore/Trackable", "deliteful/list/List"], function (Memory, Trackable, List) {
-    var list = new List();
-    var source = new (Memory.createSubclass([Trackable], {}))();
-    var item1 = {...};
-    var item2 = {...};
-    source.add(item1);
-    source.add(item2, {beforeId: item1.id});
-    list.source = source;
+	var list = new List();
+	var source = new (Memory.createSubclass([Trackable], {}))();
+	var item1 = {...};
+	var item2 = {...};
+	source.add(item1);
+	source.add(item2, {beforeId: item1.id});
+	list.source = source;
 });
 ```
 
@@ -175,13 +175,13 @@ refresh its rendering accordingly.
 
 ```js
 require(["decor/ObservableArray", "decor/Observable", "deliteful/list/List"], function (ObservableArray, Observable, List) {
-    var list = new List();
-    var source = new ObservableArray();
-    var item1 = new Observable({...});
-    var item2 = new Observable({...});
-    source.push(item1);
-    source.push(item2);
-    list.source = source;
+	var list = new List();
+	var source = new ObservableArray();
+	var item1 = new Observable({...});
+	var item2 = new Observable({...});
+	source.push(item1);
+	source.push(item2);
+	list.source = source;
 });
 ```
 
@@ -445,9 +445,9 @@ with
 ```js
 function actionHandler(event) {
 	var renderer = event.currentTarget.getEnclosingRenderer(event.target);
-    if (renderer) {
-    	// use the info on renderer.item and perform an action
-    }
+	if (renderer) {
+		// use the info on renderer.item and perform an action
+	}
 }
 ```
 
