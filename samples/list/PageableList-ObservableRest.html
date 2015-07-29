@@ -28,29 +28,66 @@
 			var list  = register.createElement("d-pageable-list");
 			list.id = "L";
 
-			var initRequest = request("http://9.128.82.26:3000/book?&start=" + 0 + "&length=" + 4, {
+			var initRequest = request("http://9.128.82.61:3000/book?&start=" + 0 + "&length=" + 4, {
 				method: 'GET'
 			});
 			initRequest.then(function (response) {
 				var arr = JSON.parse(response);
-				list.source = new ObservableArray();
-				for (var i = 0; i < arr.length; i++) {
-					list.source.set(i, arr[i]);
-				}
-			})
+                list.source = new ObservableArray();
+                for (var i = 0; i < arr.length; i++) {
+                    list.source[i] = new Observable(arr[i]);
+                }
+                var itemHandles = [];
+                for (i = 0; i < list.source.length; i++) {
+                    // affect the callback to the observe function if the item is observable
+                    itemHandles[i] = Observable.observe(list.source[i], function (changeRecords) {
+                        var objects = [];
+                        for (var i = 0; i < changeRecords.length; i++) {
+                            var object = changeRecords[i].object;
+                            if (objects.indexOf(object) < 0) {
+                                objects.push(object);
+                                var evtUpdated = {
+                                    obj: object
+                                };
+                                list.emit("db-update", evtUpdated);
+                            }
+                        }
+                    });
+                }
+                // affect the callback to the observe function if the array is observable
+                var storeHandle = ObservableArray.observe(list.source, function (changeRecords) {
+                    for (i = 0; i < changeRecords.length; i++) {
+                        if (changeRecords[i].type === "splice") {
+                            var j;
+                            for (j = 0; j < changeRecords[i].removed.length; j++) {
+                                var evtRemoved = {
+                                    obj: changeRecords[i].removed[j]
+                                };
+                                list.emit("db-delete", evtRemoved);
+                            }
+                            for (j = 0; j < changeRecords[i].addedCount; j++) {
+                                var evtAdded = {
+                                    obj: list.source[changeRecords[i].index + j]
+                                };
+                                list.emit("db-add", evtAdded);
+                            }
+                        }
+                    }
+                });
+			});
 			list.on("db-add", function(evt) {
-				request("http://9.128.82.26:3000/book", {
+				request("http://9.128.82.61:3000/book", {
 					method: 'POST',
 					data: evt.obj
 				});
 			});
 			list.on("db-delete", function(evt) {
-				request("http://9.128.82.26:3000/book/" + evt.obj.id, {
+				request("http://9.128.82.61:3000/book/" + evt.obj.id, {
 					method: 'DELETE'
 				});
 			});
 			list.on("db-update", function(evt) {
-				request("http://9.128.82.26:3000/book/" + evt.obj.id, {
+				request("http://9.128.82.61:3000/book/" + evt.obj.id, {
 					method: 'PUT',
 					data: evt.obj
 				});
@@ -58,7 +95,7 @@
 			list.on("new-query-asked", function(evt) {
 				evt.setPromise(new Promise (function (resolve) {
 					var reqStart = evt.start + evt.resLength;
-					var newRequest = request("http://9.128.82.26:3000/book?&start=" + reqStart + "&length=" + (evt.end - reqStart), {
+					var newRequest = request("http://9.128.82.61:3000/book?&start=" + reqStart + "&length=" + (evt.end - reqStart), {
 						method: 'GET'
 					});
 					newRequest.then(function (response) {

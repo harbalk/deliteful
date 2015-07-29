@@ -29,19 +29,19 @@
 			var list  = register.createElement("d-list");
 			list.id = "L";
 
-			var initRequest = request("http://9.128.82.26:3000/book", {
+			var initRequest = request("http://9.128.82.61:3000/book", {
 				method: 'GET'
 			});
 			initRequest.then(function (response) {
 				var arr = JSON.parse(response);
 				list.source = new ObservableArray();
 				for (var i = 0; i < arr.length; i++) {
-					list.source.set(i, arr[i]);
+					list.source[i] = new Observable(arr[i]);
 				}
-				this._itemHandles = [];
+				var itemHandles = [];
 				for (var i = 0; i < list.source.length; i++) {
 					// affect the callback to the observe function if the item is observable
-					this._itemHandles[i] = Observable.observe(list.source[i], function (changeRecords) {
+					itemHandles[i] = Observable.observe(list.source[i], function (changeRecords) {
 						var objects = [];
 						for (var i = 0; i < changeRecords.length; i++) {
 							var object = changeRecords[i].object;
@@ -56,7 +56,7 @@
 					});
 				}
 				// affect the callback to the observe function if the array is observable
-				this._storeHandle = ObservableArray.observe(list.source, function (changeRecords) {
+				var storeHandle = ObservableArray.observe(list.source, function (changeRecords) {
 					for (var i = 0; i < changeRecords.length; i++) {
 						if (changeRecords[i].type === "splice") {
 							var j;
@@ -78,18 +78,18 @@
 			});
 
 			list.on("db-add", function(evt) {
-				request("http://9.128.82.26:3000/book", {
+				request("http://9.128.82.61:3000/book", {
 					method: 'POST',
 					data: evt.obj
 				});
 			});
 			list.on("db-delete", function(evt) {
-				request("http://9.128.82.26:3000/book/" + evt.obj.id, {
+				request("http://9.128.82.61:3000/book/" + evt.obj.id, {
 					method: 'DELETE'
 				});
 			});
 			list.on("db-update", function(evt) {
-				request("http://9.128.82.26:3000/book/" + evt.obj.id, {
+				request("http://9.128.82.61:3000/book/" + evt.obj.id, {
 					method: 'PUT',
 					data: evt.obj
 				});
@@ -104,6 +104,16 @@
 
 			list.placeAt(document.body);
 			document.body.style.display = "";
+
+            window.setTimeout(function() {
+                list.source.splice(0,1);
+            },1000);
+            window.setTimeout(function() {
+                list.source[1].set("title", "Carotte");
+            },3000);
+            window.setTimeout(function() {
+                list.source.push({title:"Stylé !"});
+            },5000);
 		});
 	</script>
 </head>

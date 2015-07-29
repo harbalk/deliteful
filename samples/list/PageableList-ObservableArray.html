@@ -21,8 +21,9 @@
 			"delite/register",
 			'requirejs-dplugins/Promise!',
 			"deliteful/list/PageableList", // page level CSS
-			"decor/ObservableArray"
-		], function (register, Promise, PageableList, ObservableArray) {
+			"decor/ObservableArray",
+			"decor/Observable"
+		], function (register, Promise, PageableList, ObservableArray, Observable) {
 			var list  = register.createElement("d-pageable-list");
 			list.id = "L";
 
@@ -32,7 +33,7 @@
 			var arr = [];
 
 			for (var i = 0; i < 100; i++) {
-				arr.push({title:"Programmatic item of order " + i});
+				arr.push(new Observable({title:"Programmatic item of order " + i}));
 			}
 
 			//called when the all the items have been displayed to get more
@@ -66,6 +67,16 @@
 
 			list.placeAt(document.body);
 			document.body.style.display = "";
+
+			window.setTimeout(function() {
+				list.source.splice(0,1);
+			},1000);
+			window.setTimeout(function() {
+				list.source[1].set("title", "Carotte");
+			},3000);
+			window.setTimeout(function() {
+				list.source.splice(4, 0, {title:"Stylé !"});
+			},5000);
 		});
 	</script>
 </head>

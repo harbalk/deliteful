@@ -49,6 +49,17 @@
 			};
 			list.placeAt(document.body);
 			document.body.style.display = "";
+
+
+            window.setTimeout(function() {
+                list.source.splice(0,1);
+            },1000);
+            window.setTimeout(function() {
+                list.source[1].set("title", "Carotte");
+            },3000);
+            window.setTimeout(function() {
+                list.source.push({title:"Stylé !"});
+            },5000);
 		});
 	</script>
 </head>
